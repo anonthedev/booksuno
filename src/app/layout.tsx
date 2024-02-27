@@ -1,8 +1,8 @@
 import "./globals.css";
 import { Gloock, Golos_Text, Raleway } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
 import Player from "@/Components/Player";
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
+import GoogleAnalytics from "@/Components/GoogleAnalytics";
 
 export const metadata = {
   title: "bookify",
@@ -40,12 +40,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${gloock.variable} ${golos.variable} ${raleway.variable}`}>
       <body>
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
+          <GoogleAnalytics ga_id=
+            {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+        ) : null}
         {children}
         <section className="fixed bottom-0 order-2">
           <Player />
           <MobileSidebar />
         </section>
-        <Analytics />
       </body>
     </html>
   );
