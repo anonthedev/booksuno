@@ -36,7 +36,7 @@ export default function SearchBooks() {
 
             <form onSubmit={(e) => { handleSubmit(e) }}
                 className="w-full flex flex-row gap-2 md:flex-col">
-                <input className="text-black bg-white w-1/2 md:w-full p-4 rounded-md focus:outline-none" placeholder="Enter book name" type="text" name="" id="" onChange={(e) => { setSearchQuery(e.target.value) }} />
+                <input className="text-black bg-white w-1/2 md:w-full p-4 rounded-md focus:outline-none" placeholder={searchFilter === "title" ? "Enter book name" : searchFilter === "author" ? "Enter author's last name" : searchFilter === "genre" ? "Enter genre" : "Enter book name"} type="text" name="" id="" onChange={(e) => { setSearchQuery(e.target.value) }} />
 
                 <select className="text-black p-4 rounded-md font-semibold focus:outline-none" onChange={(e) => { setSearchFilter(e.target.value) }} defaultValue={"title"}>
                     <option value="title">Title</option>
