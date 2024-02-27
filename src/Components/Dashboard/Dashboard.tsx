@@ -23,7 +23,7 @@ export default function Dashboard() {
                     </a>
                 </div>
                 <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-28">
-                    {/* <SearchBooks /> */}
+                    <SearchBooks />
                     <Feed />
                 </div>
 

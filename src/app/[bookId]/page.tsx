@@ -1,5 +1,5 @@
 import Book from "@/Components/Book/Book";
-import Player from "@/Components/Dashboard/Player";
+import Player from "@/Components/Player";
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
 import Sidebar from "@/Components/Sidebar/Sidebar";
 

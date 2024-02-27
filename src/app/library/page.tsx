@@ -1,5 +1,5 @@
 import Sidebar from "@/Components/Sidebar/Sidebar"
-import Player from "@/Components/Dashboard/Player"
+import Player from "@/Components/Player"
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar"
 import Library from "@/Components/Library/Library"
 

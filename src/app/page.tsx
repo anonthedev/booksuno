@@ -1,5 +1,5 @@
 import Dashboard from "@/Components/Dashboard/Dashboard";
-import Player from "@/Components/Dashboard/Player";
+import Player from "@/Components/Player";
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
 import Sidebar from "@/Components/Sidebar/Sidebar";
 

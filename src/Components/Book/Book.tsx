@@ -10,7 +10,8 @@ import { FaPlay, FaPause } from "react-icons/fa"
 export default function Book({ id }: { id: string }) {
     const [bookInfo, setBookInfo] = useState<any>()
     const [loading, setLoading] = useState<boolean>()
-    const { updateGlobalAudioURL, globalAudioURL, updatePlay, play } = useAudioURL((state: any) => state)
+    const { updateGlobalAudioURL, globalAudioURL, updateAudioInfo } = useAudioURL((state: any) => state)
+    // const [playing, setPlaying] = useState<boolean>(() => (audioElRef && !audioElRef.current.paused))
 
     useEffect(() => {
         setLoading(true)
@@ -51,20 +52,30 @@ export default function Book({ id }: { id: string }) {
                         <p className="font-golos">{bookInfo.bookDesc}</p>
                         <div className="flex flex-col gap-5 font-golos">
                             {bookInfo.episodes.length > 0 && bookInfo.episodes.map((episode: any, index: number) => (
-                                <div className="flex flex-row gap-2 items-center text-lg w-fit" key={index}>
-                                    {globalAudioURL && globalAudioURL === episode.epURL ? <FaPause
-                                        className="cursor-pointer"
-                                        size={20}
-                                        onClick={() => {
-                                        }}
-                                    /> : <FaPlay
-                                        className="cursor-pointer"
-                                        size={20}
-                                        onClick={() => {
-                                            updateGlobalAudioURL(episode.epURL)
-                                        }} />}
+                                <div className="flex flex-row gap-2 items-center text-lg w-fit cursor-pointer" key={index} onClick={()=>{
+                                    updateGlobalAudioURL(episode.epURL)
+                                    updateAudioInfo({audioName: episode.epTitle, audioAuthor: ""})
+                                    // audioElRef.current.src = episode.epURL
+                                    // audioElRef.current.play()
+                                }}>
+                                    {/* {playing && audioElRef.current.src === episode.epURL ?
+                                        <FaPause
+                                            className="cursor-pointer"
+                                            size={20}
+                                            onClick={() => {
+                                                audioElRef.current.pause()
+                                                updateAudioElRef(audioElRef)
+                                            }}
+                                        /> : <FaPlay
+                                            className="cursor-pointer"
+                                            size={20}
+                                            onClick={async () => {
+                                                audioElRef.current.src = episode.epURL
+                                                audioElRef.current.play()
+                                                updateAudioElRef(audioElRef)
+                                            }} />} */}
                                     <span>{index + 1}.</span>
-                                    <span className="md:hidden" title={episode.epTitle}>{episode.epTitle.length > 60 ? episode.epTitle.slice(0, -(episode.epTitle.length - 60)) + "..." : episode.epTitle}</span>
+                                    <span className={`md:hidden`} title={episode.epTitle}>{episode.epTitle.length > 60 ? episode.epTitle.slice(0, -(episode.epTitle.length - 60)) + "..." : episode.epTitle}</span>
                                     <span className="hidden md:block" title={episode.epTitle}>{episode.epTitle.length > 40 ? episode.epTitle.slice(0, -(episode.epTitle.length - 40)) + "..." : episode.epTitle}</span>
                                 </div>
                             ))}

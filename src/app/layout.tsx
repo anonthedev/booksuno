@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Gloock, Golos_Text, Raleway } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import Player from "@/Components/Dashboard/Player";
+import Player from "@/Components/Player";
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
 
 export const metadata = {
