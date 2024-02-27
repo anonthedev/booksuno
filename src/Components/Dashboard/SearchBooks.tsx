@@ -54,7 +54,8 @@ export default function SearchBooks() {
 
             {searchResults && searchResults.length > 0 && searchResults.map((book: any) => (
                 <div key={book.id} className={`${collaspeResults ? "hidden" : "flex"} flex-row items-center justify-between px-3 ease-in duration-300`}>
-                    <Link href={book.id} target="_blank" className="flex flex-row gap-3 items-center">
+                    <Link href={book.id}  
+                      className="flex flex-row gap-3 items-center">
                         {/* <FaPlay size={20} className="cursor-pointer" /> */}
                         <div className="flex flex-col">
                             <p className="text-gray-200 font-medium">{book.title.length > 40 ? book.title.slice(0, -(book.title.length - 40)) + "..." : book.title}</p>
