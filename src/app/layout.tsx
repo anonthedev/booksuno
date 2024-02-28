@@ -17,7 +17,7 @@ export const metadata = {
   "audiobook platform",
   "enjoy reading",
   "reading on the go"
-];
+]
   // openGraph: {
   //   images: 'https://photos.sphereshowcase.com/tBJczsgyzUAP3woETDr31.jpg',
   // },
