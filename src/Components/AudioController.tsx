@@ -4,6 +4,7 @@
 import React, { useState, useEffect, MouseEventHandler } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa"
 import { useAudioURL } from '@/zustand/state';
+import Toast from './Toast';
 
 interface propType {
     onPlay: MouseEventHandler<SVGElement>;
@@ -18,17 +19,29 @@ interface propType {
 const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, currentTime, duration }: propType) => {
     const [volume, setVolume] = useState(100);
     const [isSeeking, setIsSeeking] = useState(false);
+    const [showToast, setShowToast] = useState(false);
 
-    const { audioInfo } = useAudioURL((state: any) => state)
+    const { audioInfo, globalAudioURL } = useAudioURL((state: any) => state)
 
     useEffect(() => {
         setVolume(100); // Reset volume when audio changes
     }, [isPlaying]);
 
+    useEffect(() => {
+        if (showToast) {
+            const closeToast = setTimeout(() => {
+                setShowToast(false)
+            }, 3000)
+            return () => {
+                clearTimeout(closeToast)
+            }
+        }
+    }, [showToast])
+
     const handleVolumeChange = (e: any) => {
         const newVolume = e.target.value;
         setVolume(newVolume);
-        onVolumeChange(newVolume / 100); // Normalize volume between 0 and 1
+        onVolumeChange(newVolume / 100);
     };
 
     const handleSeek = (e: any) => {
@@ -50,7 +63,7 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
                         <p>{audioInfo.audioName}</p>
                     </div>
                     <div className='flex flex-col items-center'>
-                        <FaPlay onClick={onPlay} className={`${isPlaying ? "hidden" : "block"} cursor-pointer`} />
+                        <FaPlay onClick={globalAudioURL ? onPlay : () => { setShowToast(true) }} className={`${isPlaying ? "hidden" : "block"} cursor-pointer`} color={globalAudioURL ? '#ffffff' : 'gray'} />
                         <FaPause onClick={onPause} className={`${isPlaying ? "block" : "hidden"} cursor-pointer`} />
                         <div className='flex flex-row items-center gap-3'>
                             <span className='md:hidden'>{formatTime(currentTime)}</span>
@@ -87,7 +100,7 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
                     className="hidden md:block h-[1px] accent-purple-600 w-100 rounded-md"
                 />
             </div>
-
+            {showToast && <Toast toast='Please select an audiobook first' type='error' />}
         </section>
     );
 };
