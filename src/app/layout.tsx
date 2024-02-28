@@ -5,8 +5,19 @@ import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
 import GoogleAnalytics from "@/Components/GoogleAnalytics";
 
 export const metadata = {
-  title: "bookify",
-  description: "Seamlessly convert YouTube videos to audio, craft personalized playlists all without requiring to download anything, the ultimate platform for audio enthusiasts.",
+  title: "librarify",
+  description: "Discover a world of literary delights with Librarify! Dive into an extensive collection of free audiobooks, offering limitless listening pleasure. Immerse yourself in captivating stories, anytime, anywhere",
+  keywords: [
+  "free audiobooks",
+  "Librarify",
+  "listen to books online",
+  "audiobook streaming",
+  "digital library",
+  "literary gems",
+  "audiobook platform",
+  "enjoy reading",
+  "reading on the go"
+]
   // openGraph: {
   //   images: 'https://photos.sphereshowcase.com/tBJczsgyzUAP3woETDr31.jpg',
   // },
