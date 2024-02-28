@@ -6,18 +6,27 @@ import AudioController from './AudioController';
 
 const AudioPlayer = () => {
 
-    const { globalAudioURL } = useAudioURL((state: any) => state)
+    const { globalAudioURL, isPlaying, updateIsPlaying } = useAudioURL((state: any) => state)
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
+    // const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
 
-    useEffect(()=>{
-        if(globalAudioURL){
-            setIsPlaying(true)
+    useEffect(() => {
+        if (globalAudioURL) {
+            updateIsPlaying(true)
             audioRef.current?.play()
         }
     }, [globalAudioURL])
+
+    useEffect(() => {
+        if (isPlaying === true) {
+            audioRef.current?.play()
+        }
+        else if (isPlaying === false) {
+            audioRef.current?.pause()
+        }
+    }, [isPlaying])
 
     useEffect(() => {
         const audioElement = audioRef.current!;
@@ -40,12 +49,12 @@ const AudioPlayer = () => {
     }, []);
 
     const togglePlay = () => {
-        setIsPlaying(true);
+        updateIsPlaying(true);
         audioRef.current?.play();
     };
 
     const togglePause = () => {
-        setIsPlaying(false)
+        updateIsPlaying(false)
         audioRef.current?.pause()
     }
 
@@ -59,7 +68,7 @@ const AudioPlayer = () => {
     };
 
     return (
-        <div className="w-screen min-h-[54px] px-4">
+        <div className="w-screen min-h-[54px] px-2">
             <audio ref={audioRef} src={globalAudioURL} />
             <AudioController
                 onPlay={togglePlay}

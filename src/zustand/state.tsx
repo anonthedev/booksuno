@@ -2,16 +2,10 @@ import { create } from 'zustand'
 
 export const useAudioURL = create((set) => ({
     globalAudioURL: "",
-    skipTo: 0,
-    duration: 0,
-    play: false,
+    isPlaying: false,
     audioInfo: {audioName: "", audioAuthor: ""},
-    audioElRef: null,
     updateGlobalAudioURL: (newURL: string) => set({ globalAudioURL: newURL }),
-    updateSkipTo: (seconds: number) => set({ skipTo: seconds }),
-    updateDuration: (duration: number) => set({ duration: duration }),
-    updatePlay: (play: boolean) => set({ play: play}),
-    updateAudioElRef: (elRef: HTMLAudioElement) => set({ audioElRef: elRef}),
+    updateIsPlaying: (play: boolean) => set({ isPlaying: play}),
     updateAudioInfo: (info: any) => set({ audioInfo: {audioName: info.audioName, audioAuthor: info.audioAuthor}})
 }))
 
