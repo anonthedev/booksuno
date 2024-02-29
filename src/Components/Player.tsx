@@ -6,7 +6,7 @@ import AudioController from './AudioController';
 
 const AudioPlayer = () => {
 
-    const { globalAudioURL, isPlaying, updateIsPlaying } = useAudioURL((state: any) => state)
+    const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration } = useAudioURL((state: any) => state)
     const audioRef = useRef<HTMLAudioElement | null>(null);
     // const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -15,6 +15,7 @@ const AudioPlayer = () => {
     useEffect(() => {
         if (globalAudioURL) {
             updateIsPlaying(true)
+            updateDuration(audioRef.current?.duration)
             audioRef.current?.play()
         }
     }, [globalAudioURL])

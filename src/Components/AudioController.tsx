@@ -3,8 +3,9 @@
 
 import React, { useState, useEffect, MouseEventHandler } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa"
-import { useAudioURL } from '@/zustand/state';
+import { useAudioURL, useBookInfo } from '@/zustand/state';
 import Toast from './Toast';
+import Loader from './Loader';
 
 interface propType {
     onPlay: MouseEventHandler<SVGElement>;
@@ -20,11 +21,13 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
     const [volume, setVolume] = useState(100);
     const [isSeeking, setIsSeeking] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [currentPlaying, setCurrentPlaying] = useState<number | null>()
 
+    const { bookInfo } = useBookInfo((state: any) => state)
     const { audioInfo, globalAudioURL } = useAudioURL((state: any) => state)
 
     useEffect(() => {
-        setVolume(100); // Reset volume when audio changes
+        setVolume(100);
     }, [isPlaying]);
 
     useEffect(() => {
@@ -37,6 +40,20 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
             }
         }
     }, [showToast])
+
+    function timeToSeconds(timeStr: string) {
+        // Split the time string into hours, minutes, and seconds
+        var timeParts = timeStr.split(':');
+        var hours = parseInt(timeParts[0]);
+        var minutes = parseInt(timeParts[1]);
+        var seconds = parseInt(timeParts[2]);
+
+        // Calculate the total duration in seconds
+        var totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+        return totalSeconds;
+    }
+
 
     const handleVolumeChange = (e: any) => {
         const newVolume = e.target.value;
@@ -55,6 +72,24 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+    // console.log()
+
+    // useEffect(() => {
+    //     if (bookInfo) {
+    //         console.log(Math.floor(duration), timeToSeconds(bookInfo.episodes[currentPlaying].epDuration))
+    //     }
+    // }, [duration, bookInfo, currentPlaying])
+
+    useEffect(() => {
+        if (bookInfo) {
+            bookInfo.episodes.forEach((episode: any, index: number) => {
+                if (episode.epURL === globalAudioURL) {
+                    setCurrentPlaying(index)
+                }
+            })
+        }
+    }, [globalAudioURL, bookInfo])
+
     return (
         <section className='flex flex-col md:mb-1'>
             <div className="flex flex-col w-full min-h-[56px] bg-gradient-to-t from-black to-[#2a2929]  md:justify-between px-4 rounded-md">
@@ -63,8 +98,22 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
                         <p>{audioInfo.audioName}</p>
                     </div>
                     <div className='flex flex-col items-center'>
-                        <FaPlay onClick={globalAudioURL ? onPlay : () => { setShowToast(true) }} className={`${isPlaying ? "hidden" : "block"} cursor-pointer`} color={globalAudioURL ? '#ffffff' : 'gray'} />
-                        <FaPause onClick={onPause} className={`${isPlaying ? "block" : "hidden"} cursor-pointer`} />
+                        {/* <FaPlay onClick={globalAudioURL ? onPlay : () => { setShowToast(true) }} className={`${isPlaying ? "hidden" : "block"} cursor-pointer`} color={globalAudioURL ? '#ffffff' : 'gray'} />
+                        <FaPause onClick={onPause} className={`${isPlaying ? "block" : "hidden"} cursor-pointer`} /> */}
+                        {currentPlaying && isPlaying && Math.floor(duration) === timeToSeconds(bookInfo.episodes[currentPlaying].epDuration)
+                            ? <FaPause onClick={onPause} className={`cursor-pointer`} />
+                            : !isPlaying ? <FaPlay
+                                onClick={globalAudioURL
+                                    ? onPlay
+                                    : () => {
+                                        setShowToast(true)
+                                    }}
+                                className={`cursor-pointer`}
+                                color={globalAudioURL ? '#ffffff' : 'gray'} />
+                                : currentPlaying && isPlaying && Math.floor(duration) !== timeToSeconds(bookInfo.episodes[currentPlaying].epDuration)
+                                    ? <Loader />
+                                    : null
+                        }
                         <div className='flex flex-row items-center gap-3'>
                             <span className='lg:hidden'>{formatTime(currentTime)}</span>
                             <input

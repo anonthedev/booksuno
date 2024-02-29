@@ -4,29 +4,31 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import Loader from "../Loader"
-import { useAudioURL } from "@/zustand/state"
+import { useAudioURL, useBookInfo } from "@/zustand/state"
 import { FaPlay, FaPause } from "react-icons/fa"
 
 export default function Book({ id }: { id: string }) {
-    const [bookInfo, setBookInfo] = useState<any>()
+    // const [bookInfo, setBookInfo] = useState<any>()
     const [loading, setLoading] = useState<boolean>()
     const { updateGlobalAudioURL, globalAudioURL, updateAudioInfo, isPlaying, updateIsPlaying } = useAudioURL((state: any) => state)
-    // const [playing, setPlaying] = useState<boolean>(() => (audioElRef && !audioElRef.current.paused))
+    const {updateBookInfo, bookInfo} = useBookInfo((state: any) => state)
 
     useEffect(() => {
         setLoading(true)
         axios.get(`/api/bookDetails?bookId=${id}`)
             .then((resp): void => {
-                setBookInfo(resp.data)
+                updateBookInfo(resp.data)
             })
             .then(() => {
                 setLoading(false)
             })
     }, [id])
 
+    // console.log(bookInfo)
+
     if (loading) {
         return (
-            <section className="bg-[#121212] p-4 rounded-lg flex flex-row gap-1 items-center justify-center h-full mb-2 lg:h-fit font-golos">
+            <section className="bg-[#121212] p-4 rounded-lg flex flex-row gap-2 items-center justify-center h-full mb-2 lg:h-fit font-golos">
                 <Loader />
                 <p>Loading...</p>
             </section>
@@ -52,22 +54,13 @@ export default function Book({ id }: { id: string }) {
                         <p className="font-golos">{bookInfo.bookDesc}</p>
                         <div className="flex flex-col gap-5 font-golos">
                             {bookInfo.episodes.length > 0 && bookInfo.episodes.map((episode: any, index: number) => (
-                                <div className="flex flex-row gap-2 items-center text-lg w-fit cursor-pointer" key={index}
-                                // onClick={() => {
-                                //     updateGlobalAudioURL(episode.epURL)
-                                //     updateAudioInfo({ audioName: episode.epTitle, audioAuthor: "" })
-                                //     // audioElRef.current.src = episode.epURL
-                                //     // audioElRef.current.play()
-                                // }}
-                                >
+                                <div className="flex flex-row gap-2 items-center text-lg w-fit" key={index}>
                                     {isPlaying && globalAudioURL === episode.epURL ?
                                         <FaPause
                                             className="cursor-pointer"
                                             size={20}
                                             onClick={() => {
                                                 updateIsPlaying(false)
-                                                // audioElRef.current.pause()
-                                                // updateAudioElRef(audioElRef)
                                             }}
                                         /> : <FaPlay
                                             className="cursor-pointer"
@@ -76,8 +69,6 @@ export default function Book({ id }: { id: string }) {
                                                 updateGlobalAudioURL(episode.epURL)
                                                 updateAudioInfo({ audioName: episode.epTitle, audioAuthor: "" })
                                                 updateIsPlaying(true)
-                                                // audioElRef.current.play()
-                                                // updateAudioElRef(audioElRef)
                                             }} />}
                                     <span>{index + 1}.</span>
                                     <span className={`md:hidden`} title={episode.epTitle}>{episode.epTitle.length > 60 ? episode.epTitle.slice(0, -(episode.epTitle.length - 60)) + "..." : episode.epTitle}</span>

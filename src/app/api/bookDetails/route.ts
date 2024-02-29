@@ -17,7 +17,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const epInfo = Array.from(episodes).map((episode) => {
         const epTitle = episode.getElementsByTagName("title")[0].textContent
         const epURL = episode.getElementsByTagName("media:content")[0].getAttribute("url")
-        return { epTitle, epURL };
+        const epDurationNode = episode.getElementsByTagName("itunes:duration")[0]
+        const epDuration = epDurationNode.textContent?.trim()
+        return { epTitle, epURL, epDuration };
     });
 
     return NextResponse.json({

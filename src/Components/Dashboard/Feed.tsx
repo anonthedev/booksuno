@@ -30,7 +30,7 @@ export default function Feed() {
                             {book.authors.length > 0 && book.authors.map((author: any) => (<p key={author.id} className="text-xs text-gray-500">{author.first_name + " " + author.last_name}</p>))}
                         </div>
                     </Link>
-                )) : <div className="flex flex-row gap-1 items-center justify-center my-2">
+                )) : <div className="flex flex-row gap-2 items-center justify-center my-2">
                     <Loader />
                     <p>Loading...</p>
                 </div>}
