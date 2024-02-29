@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import Loader from "../Loader"
 import { useAudioURL, useBookInfo } from "@/zustand/state"
 import { FaPlay, FaPause } from "react-icons/fa"
+import Donate from "../Donate"
 
 export default function Book({ id }: { id: string }) {
     // const [bookInfo, setBookInfo] = useState<any>()
@@ -38,14 +39,7 @@ export default function Book({ id }: { id: string }) {
     return (
         <section className="bg-[#121212] p-4 rounded-lg flex flex-col gap-8 h-full mb-2 lg:h-fit">
             <div className="flex flex-row justify-between items-center">
-                <a href="https://www.buymeacoffee.com/anonthedev" target="_blank">
-                    <img
-                        src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
-                        alt="Buy Me A Coffee"
-                        width={145}
-                        height={30}
-                    />
-                </a>
+                <Donate/>
             </div>
             <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-28">
                 {bookInfo &&
