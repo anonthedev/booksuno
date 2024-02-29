@@ -1,4 +1,3 @@
-// components/AudioController.js
 "use client"
 
 import React, { useState, useEffect, MouseEventHandler } from 'react';
@@ -17,7 +16,7 @@ interface propType {
     duration: number;
 }
 
-const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, currentTime, duration }: propType) => {
+export default function AudioController({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, currentTime, duration }: propType) {
     const [volume, setVolume] = useState(100);
     const [isSeeking, setIsSeeking] = useState(false);
     const [showToast, setShowToast] = useState(false);
@@ -42,13 +41,11 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
     }, [showToast])
 
     function timeToSeconds(timeStr: string) {
-        // Split the time string into hours, minutes, and seconds
         var timeParts = timeStr.split(':');
         var hours = parseInt(timeParts[0]);
         var minutes = parseInt(timeParts[1]);
         var seconds = parseInt(timeParts[2]);
 
-        // Calculate the total duration in seconds
         var totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
         return totalSeconds;
@@ -72,14 +69,6 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
-    // console.log()
-
-    // useEffect(() => {
-    //     if (bookInfo) {
-    //         console.log(Math.floor(duration), timeToSeconds(bookInfo.episodes[currentPlaying].epDuration))
-    //     }
-    // }, [duration, bookInfo, currentPlaying])
-
     useEffect(() => {
         if (bookInfo) {
             bookInfo.episodes.forEach((episode: any, index: number) => {
@@ -98,8 +87,6 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
                         <p>{audioInfo.audioName}</p>
                     </div>
                     <div className='flex flex-col items-center'>
-                        {/* <FaPlay onClick={globalAudioURL ? onPlay : () => { setShowToast(true) }} className={`${isPlaying ? "hidden" : "block"} cursor-pointer`} color={globalAudioURL ? '#ffffff' : 'gray'} />
-                        <FaPause onClick={onPause} className={`${isPlaying ? "block" : "hidden"} cursor-pointer`} /> */}
                         {currentPlaying && isPlaying && Math.floor(duration) === timeToSeconds(bookInfo.episodes[currentPlaying].epDuration)
                             ? <FaPause onClick={onPause} className={`cursor-pointer`} />
                             : !isPlaying ? <FaPlay
@@ -153,5 +140,3 @@ const AudioController = ({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, c
         </section>
     );
 };
-
-export default AudioController;

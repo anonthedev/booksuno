@@ -4,7 +4,7 @@ import { useAudioURL } from "@/zustand/state"
 import React, { useState, useRef, useEffect } from 'react';
 import AudioController from './AudioController';
 
-const AudioPlayer = () => {
+export default function AudioPlayer(){
 
     const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration } = useAudioURL((state: any) => state)
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -83,5 +83,3 @@ const AudioPlayer = () => {
         </div>
     );
 };
-
-export default AudioPlayer;
