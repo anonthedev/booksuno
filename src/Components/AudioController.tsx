@@ -84,11 +84,11 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
     return (
         <section className='flex flex-col md:mb-1'>
             <div className="flex flex-col w-full min-h-[56px] bg-gradient-to-t from-black to-[#2a2929]  md:justify-between px-4 rounded-md">
-                <div className="flex flex-row gap-2 items-center justify-between w-100 min-h-[54px]">
-                    <div className='w-[30ch]'>
+                <div className="flex flex-row items-center justify-between w-100 min-h-[54px]">
+                    <div className='w-[25ch] md:w-[30ch]'>
                         <p>{audioInfo.audioName}</p>
                     </div>
-                    <div className='flex flex-col items-center'>
+                    <div className='flex flex-col items-center self-center'>
                         {currentPlaying !== null && isPlaying && Math.floor(duration) === timeToSeconds(bookInfo.episodes[currentPlaying].epDuration)
                             ? <FaPause onClick={onPause} className={`cursor-pointer`} />
                             : !isPlaying ? <FaPlay

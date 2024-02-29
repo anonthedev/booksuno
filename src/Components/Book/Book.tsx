@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import Loader from "../Loader"
 import { useAudioURL, useBookInfo } from "@/zustand/state"
 import { FaPlay, FaPause } from "react-icons/fa"
-import Donate from "../Donate"
+import DonateButton from "../DonateButton"
 
 export default function Book({ id }: { id: string }) {
     // const [bookInfo, setBookInfo] = useState<any>()
@@ -39,7 +39,7 @@ export default function Book({ id }: { id: string }) {
     return (
         <section className="bg-[#121212] p-4 rounded-lg flex flex-col gap-8 h-full mb-2 lg:h-fit">
             <div className="flex flex-row justify-between items-center">
-                <Donate/>
+                <DonateButton/>
             </div>
             <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-28">
                 {bookInfo &&

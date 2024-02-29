@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import Feed from "./Feed";
-import Image from "next/image";
 import Loader from "../Loader";
 import SearchBooks from "./SearchBooks";
-import Donate from "../Donate";
+import DonateButton from "../DonateButton";
 
 export default function Dashboard() {
     const [loading, setLoading] = useState<boolean>()
@@ -14,7 +13,7 @@ export default function Dashboard() {
         return (
             <section className="bg-[#121212] p-4 rounded-lg flex flex-col gap-8 h-full mb-2 lg:h-fit">
                 <div className="flex flex-row justify-between items-center">
-                    <Donate/>
+                    <DonateButton/>
                 </div>
                 <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-28">
                     <SearchBooks />
