@@ -4,11 +4,10 @@ import { useAudioURL } from "@/zustand/state"
 import React, { useState, useRef, useEffect } from 'react';
 import AudioController from './AudioController';
 
-export default function AudioPlayer(){
+export default function AudioPlayer() {
 
     const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration } = useAudioURL((state: any) => state)
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    // const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
 
@@ -48,6 +47,17 @@ export default function AudioPlayer(){
             audioElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
         };
     }, []);
+
+    useEffect(() => {
+        if (globalAudioURL) {
+            document.onkeydown = (e) => {
+                if (e.isComposing || e.key === " " || e.key === "Space Bar" || e.code === "Space") {
+                    e.preventDefault()
+                    updateIsPlaying(!isPlaying)
+                }
+            }
+        }
+    })
 
     const togglePlay = () => {
         updateIsPlaying(true);
