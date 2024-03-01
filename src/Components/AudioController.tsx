@@ -14,13 +14,13 @@ interface propType {
     onSeek: Function;
     currentTime: number;
     duration: number;
+    canPlay: boolean;
 }
 
-export default function AudioController({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, currentTime, duration }: propType) {
+export default function AudioController({ onPlay, onPause, isPlaying, onVolumeChange, onSeek, currentTime, duration, canPlay }: propType) {
     const [volume, setVolume] = useState(100);
     const [isSeeking, setIsSeeking] = useState(false);
     const [showToast, setShowToast] = useState(false);
-    const [currentPlaying, setCurrentPlaying] = useState<number | null>(null)
 
     const { bookInfo } = useBookInfo((state: any) => state)
     const { audioInfo, globalAudioURL } = useAudioURL((state: any) => state)
@@ -40,16 +40,16 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
         }
     }, [showToast])
 
-    function timeToSeconds(timeStr: string) {
-        var timeParts = timeStr.split(':');
-        var hours = parseInt(timeParts[0]);
-        var minutes = parseInt(timeParts[1]);
-        var seconds = parseInt(timeParts[2]);
+    // function timeToSeconds(timeStr: string) {
+    //     var timeParts = timeStr.split(':');
+    //     var hours = parseInt(timeParts[0]);
+    //     var minutes = parseInt(timeParts[1]);
+    //     var seconds = parseInt(timeParts[2]);
 
-        var totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    //     var totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
-        return totalSeconds;
-    }
+    //     return totalSeconds;
+    // }
 
 
     const handleVolumeChange = (e: any) => {
@@ -69,18 +69,6 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
-    useEffect(() => {
-        if (bookInfo) {
-            bookInfo.episodes.forEach((episode: any, index: number) => {
-                if (episode.epURL === globalAudioURL) {
-                    setCurrentPlaying(index)
-                }
-            })
-        }
-    }, [globalAudioURL, bookInfo])
-
-    // console.log(bookInfo.episodes[0].epURL)
-
     return (
         <section className='flex flex-col md:mb-1'>
             <div className="flex flex-col w-full min-h-[56px] bg-gradient-to-t from-black to-[#2a2929]  md:justify-between px-4 rounded-md">
@@ -89,7 +77,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                         <p>{audioInfo.audioName}</p>
                     </div>
                     <div className='flex flex-col items-center self-center'>
-                        {currentPlaying !== null && isPlaying && Math.floor(duration) === timeToSeconds(bookInfo.episodes[currentPlaying].epDuration)
+                        {isPlaying && canPlay
                             ? <FaPause onClick={onPause} className={`cursor-pointer`} />
                             : !isPlaying ? <FaPlay
                                 onClick={globalAudioURL
@@ -99,7 +87,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                                     }}
                                 className={`cursor-pointer`}
                                 color={globalAudioURL ? '#ffffff' : 'gray'} />
-                                : currentPlaying !== null && isPlaying && Math.floor(duration) !== timeToSeconds(bookInfo.episodes[currentPlaying].epDuration)
+                                : isPlaying && !canPlay
                                     ? <Loader />
                                     : null
                         }

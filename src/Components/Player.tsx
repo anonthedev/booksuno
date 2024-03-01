@@ -10,9 +10,11 @@ export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [canPlay, setCanPlay] = useState<boolean>(false);
 
     useEffect(() => {
         if (globalAudioURL) {
+            setCanPlay(false)
             updateIsPlaying(true)
             updateDuration(audioRef.current?.duration)
             audioRef.current?.play()
@@ -48,16 +50,16 @@ export default function AudioPlayer() {
         };
     }, []);
 
-    // useEffect(() => {
-    //     if (globalAudioURL) {
-    //         document.onkeydown = (e) => {
-    //             if (e.isComposing || e.key === " " || e.key === "Space Bar" || e.code === "Space") {
-    //                 e.preventDefault()
-    //                 updateIsPlaying(!isPlaying)
-    //             }
-    //         }
-    //     }
-    // })
+    useEffect(() => {
+        if (globalAudioURL) {
+            document.onkeydown = (e) => {
+                if (e.isComposing || e.key === " " || e.key === "Space Bar" || e.code === "Space") {
+                    e.preventDefault()
+                    updateIsPlaying(!isPlaying)
+                }
+            }
+        }
+    })
 
     const togglePlay = () => {
         updateIsPlaying(true);
@@ -80,8 +82,11 @@ export default function AudioPlayer() {
 
     return (
         <div className="w-screen min-h-[54px] px-2">
-            <audio ref={audioRef} src={globalAudioURL} />
+            <audio ref={audioRef} src={globalAudioURL} onCanPlay={
+                () => { setCanPlay(true) }
+            } />
             <AudioController
+                canPlay={canPlay}
                 onPlay={togglePlay}
                 onPause={togglePause}
                 isPlaying={isPlaying}
