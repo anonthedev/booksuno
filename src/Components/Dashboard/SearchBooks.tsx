@@ -9,18 +9,11 @@ export default function SearchBooks() {
     const [searchQuery, setSearchQuery] = useState("")
     const [collaspeResults, setCollaspeResults] = useState<boolean>(false)
 
+    const specialCharsRegex = /[^\w\s]|_/g;
+
     const [searchFilter, setSearchFilter] = useState("title")
 
     const { updateSearchResults, searchResults } = useSearch((state: any) => state)
-
-
-    // function compareStringsPartial(str1: string, str2: string) {
-    //     const words1 = str1.toLowerCase().split(" ");
-    //     const words2 = str2.toLowerCase().split(" ");
-
-
-    //     return true;
-    // }
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -31,12 +24,10 @@ export default function SearchBooks() {
                     if (searchQuery.split(" ").length > 1) {
                         const filteredResults: any[] = [];
                         results.data.books.forEach((book: any, index: number) => {
-                            const title = book.title.toLowerCase()
-                            if (title.includes(searchQuery.toLowerCase())) {
+                            const title = book.title.toLowerCase().replace(specialCharsRegex, "")
+                            if (title.includes(searchQuery.toLowerCase().replace(specialCharsRegex, ""))) {
                                 filteredResults.push(book);
-                                console.log("xxxx");
                             }
-                            console.log("XXX")
                         })
                         updateSearchResults(filteredResults)
                     } else {
@@ -51,7 +42,6 @@ export default function SearchBooks() {
         }
     }
 
-    // console.log(searchResults)
     return (
         <section className="w-100 flex flex-col gap-5 font-golos">
             <h2 className="text-4xl font-bold">Search an audiobook</h2>
