@@ -13,14 +13,35 @@ export default function SearchBooks() {
 
     const { updateSearchResults, searchResults } = useSearch((state: any) => state)
 
+
+    // function compareStringsPartial(str1: string, str2: string) {
+    //     const words1 = str1.toLowerCase().split(" ");
+    //     const words2 = str2.toLowerCase().split(" ");
+
+
+    //     return true;
+    // }
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
         if (searchQuery !== "") {
             setSearching(true)
             await axios.get(`/api/search?filter=${searchFilter}&query=${searchQuery}`)
                 .then((results) => {
-                    updateSearchResults(results.data.books)
-                    console.log(results.data)
+                    if (searchQuery.split(" ").length > 1) {
+                        const filteredResults: any[] = [];
+                        results.data.books.forEach((book: any, index: number) => {
+                            const title = book.title.toLowerCase()
+                            if (title.includes(searchQuery.toLowerCase())) {
+                                filteredResults.push(book);
+                                console.log("xxxx");
+                            }
+                            console.log("XXX")
+                        })
+                        updateSearchResults(filteredResults)
+                    } else {
+                        updateSearchResults(results.data.books)
+                    }
                 })
                 .then(() => {
                     setSearching(false)
@@ -30,6 +51,7 @@ export default function SearchBooks() {
         }
     }
 
+    // console.log(searchResults)
     return (
         <section className="w-100 flex flex-col gap-5 font-golos">
             <h2 className="text-4xl font-bold">Search an audiobook</h2>
@@ -54,11 +76,11 @@ export default function SearchBooks() {
 
             {searchResults && searchResults.length > 0 && searchResults.map((book: any) => (
                 <div key={book.id} className={`${collaspeResults ? "hidden" : "flex"} flex-row items-center justify-between px-3 ease-in duration-300`}>
-                    <Link href={book.id}  
-                      className="flex flex-row gap-3 items-center">
+                    <Link href={book.id}
+                        className="flex flex-row gap-3 items-center">
                         {/* <FaPlay size={20} className="cursor-pointer" /> */}
                         <div className="flex flex-col">
-                            <p className="text-gray-200 font-medium">{book.title.length > 40 ? book.title.slice(0, -(book.title.length - 40)) + "..." : book.title}</p>
+                            <p title={book.title} className="text-gray-200 font-medium">{book.title.length > 40 ? book.title.slice(0, -(book.title.length - 40)) + "..." : book.title}</p>
                             {book.authors.length > 0 && book.authors.map((author: any) => (<p key={author.id} className="text-xs text-gray-500">{author.first_name + " " + author.last_name}</p>))}
                         </div>
                     </Link>

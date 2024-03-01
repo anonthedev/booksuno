@@ -50,16 +50,16 @@ export default function AudioPlayer() {
         };
     }, []);
 
-    useEffect(() => {
-        if (globalAudioURL) {
-            document.onkeydown = (e) => {
-                if (e.isComposing || e.key === " " || e.key === "Space Bar" || e.code === "Space") {
-                    e.preventDefault()
-                    updateIsPlaying(!isPlaying)
-                }
-            }
-        }
-    })
+    // useEffect(() => {
+    //     if (globalAudioURL) {
+    //         document.onkeydown = (e) => {
+    //             if (e.isComposing || e.key === " " || e.key === "Space Bar" || e.code === "Space") {
+    //                 e.preventDefault()
+    //                 updateIsPlaying(!isPlaying)
+    //             }
+    //         }
+    //     }
+    // })
 
     const togglePlay = () => {
         updateIsPlaying(true);
