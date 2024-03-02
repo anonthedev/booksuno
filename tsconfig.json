@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext", "WebWorker"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,6 +18,9 @@
       {
         "name": "next"
       }
+    ],
+    "types": [
+      "@serwist/next/typings"
     ],
     "paths": {
       "@/*": ["./src/*"]

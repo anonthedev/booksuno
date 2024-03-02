@@ -1,5 +1,5 @@
 {
-  "name": "youdio",
+  "name": "librarify",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@serwist/next": "^8.4.4",
+    "@serwist/precaching": "^8.4.4",
+    "@serwist/sw": "^8.4.4",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",

@@ -4,22 +4,46 @@ import Player from "@/Components/Player";
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
 import GoogleAnalytics from "@/Components/GoogleAnalytics";
 import Head from "next/head";
+import { Metadata } from "next/types";
 
-export const metadata = {
-  title: "librarify",
-  description: "Discover a world of literary delights with Librarify! Dive into an extensive collection of free audiobooks, offering limitless listening pleasure. Immerse yourself in captivating stories, anytime, anywhere",
-  keywords: [
-    "free audiobooks",
-    "Librarify",
-    "listen to books online",
-    "audiobook streaming",
-    "digital library",
-    "literary gems",
-    "audiobook platform",
-    "enjoy reading",
-    "reading on the go"
-  ],
-  manifest: "/manifest.json",
+const APP_NAME = "librarify";
+const APP_DEFAULT_TITLE = "librarify";
+const APP_TITLE_TEMPLATE = "%s - librarify";
+const APP_DESCRIPTION = "Discover a world of literary delights with Librarify! Dive into an extensive collection of free audiobooks, offering limitless listening pleasure. Immerse yourself in captivating stories, anytime, anywhere";
+
+export const metadata: Metadata = {
+  applicationName: APP_NAME,
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
+    // startUpImage: [],
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: APP_NAME,
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
 };
 
 const gloock = Gloock({
