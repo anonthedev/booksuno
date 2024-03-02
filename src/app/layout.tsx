@@ -3,7 +3,6 @@ import { Gloock, Golos_Text, Raleway } from "next/font/google";
 import Player from "@/Components/Player";
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
 import GoogleAnalytics from "@/Components/GoogleAnalytics";
-import Head from "next/head";
 import { Metadata } from "next/types";
 
 const APP_NAME = "librarify";
@@ -73,6 +72,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${gloock.variable} ${golos.variable} ${raleway.variable}`}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body>
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
           <GoogleAnalytics ga_id=
