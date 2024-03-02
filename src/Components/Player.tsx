@@ -1,12 +1,14 @@
 'use client'
 
-import { useAudioURL } from "@/zustand/state"
+import { useAudioURL, useSearchInputFocus } from "@/zustand/state"
 import React, { useState, useRef, useEffect } from 'react';
 import AudioController from './AudioController';
 
 export default function AudioPlayer() {
 
     const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration } = useAudioURL((state: any) => state)
+    const { searchInputFocused } = useSearchInputFocus((state: any) => state)
+
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -51,7 +53,8 @@ export default function AudioPlayer() {
     }, []);
 
     // useEffect(() => {
-    //     if (globalAudioURL) {
+    //     console.log(searchInputFocused)
+    //     if (globalAudioURL && !searchInputFocused) {
     //         document.onkeydown = (e) => {
     //             if (e.isComposing || e.key === " " || e.key === "Space Bar" || e.code === "Space") {
     //                 e.preventDefault()

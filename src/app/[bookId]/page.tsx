@@ -20,7 +20,7 @@ export default function page({ params }: { params: { bookId: string } }) {
             </main>
 
             <main style={{ height: "100svh" }} className="hidden lg:flex flex-col w-screen">
-                <section className="bg-black p-2 flex-grow order-1 h-full ">
+                <section className="bg-[#121212] p-2 flex-grow order-1 h-full">
                     <Book id={params.bookId} />
                 </section>
                 {/* <section className="fixed bottom-0 order-2">

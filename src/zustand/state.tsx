@@ -11,6 +11,11 @@ export const useAudioURL = create((set) => ({
     updateDuration: (newDuration: number) => set({ duration: newDuration })
 }))
 
+export const useSearchInputFocus = create((set) => ({
+    searchInputFocused: null,
+    updateSearchInputFocused: (value: boolean) => set({ searchInputFocused: value })
+}))
+
 export const useUserDetails = create((set) => ({
     userDetails: null,
     updateUserDetails: (details: any) => set({ userDetails: details }),

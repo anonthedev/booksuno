@@ -2,13 +2,11 @@
 const nextConfig = {
   experimental: {
     appDir: true,
-    // serverComponentsExternalPackages: [
-    //   "puppeteer-extra",
-    //   "puppeteer-extra-plugin-stealth",
-    //   "puppeteer-extra-plugin-adblocker",
-    //   "puppeteer-extra-plugin-user-preferences",
-    //   "puppeteer-extra-plugin-user-data-dir",        
-    // ],
+  },
+  reactStrictMode: true, // Enable React strict mode for improved error handling
+  swcMinify: true,      // Enable SWC minification for improved performance
+  compiler: {
+    removeConsole: process.env.NODE_ENV !== "development", // Remove console.log in production
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -23,4 +21,12 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+// Configuration object tells the next-pwa plugin 
+const withPWA = require("next-pwa")({
+  dest: "public", // Destination directory for the PWA files
+  disable: process.env.NODE_ENV === "development", // Disable PWA in development mode
+  register: true, // Register the PWA service worker
+  skipWaiting: true, // Skip waiting for service worker activation
+});
+
+module.exports = withPWA(nextConfig);

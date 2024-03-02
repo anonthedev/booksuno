@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react"
 import axios from "axios"
-import { useSearch } from "@/zustand/state"
+import { useSearch, useSearchInputFocus } from "@/zustand/state"
 import { FaChevronDown } from "react-icons/fa"
 import Link from "next/link"
 
@@ -14,6 +14,7 @@ export default function SearchBooks() {
     const [searchFilter, setSearchFilter] = useState("title")
 
     const { updateSearchResults, searchResults } = useSearch((state: any) => state)
+    const { updateSearchInputFocused } = useSearchInputFocus((state: any) => state)
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -48,7 +49,14 @@ export default function SearchBooks() {
 
             <form onSubmit={(e) => { handleSubmit(e) }}
                 className="w-full flex flex-row gap-2 md:flex-col">
-                <input className="text-black bg-white w-1/2 md:w-full p-4 rounded-md focus:outline-none" placeholder={searchFilter === "title" ? "Enter book name" : searchFilter === "author" ? "Enter author's last name" : searchFilter === "genre" ? "Enter genre" : "Enter book name"} type="text" name="" id="" onChange={(e) => { setSearchQuery(e.target.value) }} />
+                <input
+                    onFocus={() => { updateSearchInputFocused(true) }}
+                    onBlur={() => { updateSearchInputFocused(false) }}
+                    className="text-black bg-white w-1/2 md:w-full p-4 rounded-md focus:outline-none"
+                    placeholder={searchFilter === "title" ? "Enter book name" : searchFilter === "author" ? "Enter author's last name" : searchFilter === "genre" ? "Enter genre" : "Enter book name"}
+                    type="text"
+                    onChange={(e) => { setSearchQuery(e.target.value) }}
+                />
 
                 <select className="text-black p-4 rounded-md md:w-fit font-semibold focus:outline-none" onChange={(e) => { setSearchFilter(e.target.value) }} defaultValue={"title"}>
                     <option value="title">Title</option>

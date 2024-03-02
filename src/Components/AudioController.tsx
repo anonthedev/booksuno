@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, MouseEventHandler } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa"
-import { useAudioURL, useBookInfo } from '@/zustand/state';
+import { useAudioURL } from '@/zustand/state';
 import Toast from './Toast';
 import Loader from './Loader';
 
@@ -21,8 +21,6 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
     const [volume, setVolume] = useState(100);
     const [isSeeking, setIsSeeking] = useState(false);
     const [showToast, setShowToast] = useState(false);
-
-    const { bookInfo } = useBookInfo((state: any) => state)
     const { audioInfo, globalAudioURL } = useAudioURL((state: any) => state)
 
     useEffect(() => {
@@ -39,18 +37,6 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
             }
         }
     }, [showToast])
-
-    // function timeToSeconds(timeStr: string) {
-    //     var timeParts = timeStr.split(':');
-    //     var hours = parseInt(timeParts[0]);
-    //     var minutes = parseInt(timeParts[1]);
-    //     var seconds = parseInt(timeParts[2]);
-
-    //     var totalSeconds = hours * 3600 + minutes * 60 + seconds;
-
-    //     return totalSeconds;
-    // }
-
 
     const handleVolumeChange = (e: any) => {
         const newVolume = e.target.value;
@@ -70,8 +56,10 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
     };
 
     return (
-        <section className='flex flex-col md:mb-1'>
-            <div className="flex flex-col w-full min-h-[56px] bg-gradient-to-t from-black to-[#2a2929]  md:justify-between px-4 rounded-md">
+        <section className='flex flex-col lg:mb-2'>
+            <div className="flex flex-col w-full min-h-[56px] md:justify-between px-4 rounded-md 
+            lg:bg-gray-800 
+            lg:bg-clip-padding lg:backdrop-filter lg:backdrop-blur-md lg:bg-opacity-20">
                 <div className="flex flex-row items-center justify-between w-100 min-h-[54px]">
                     <div className='w-[25ch] md:w-[30ch]'>
                         <p>{audioInfo.audioName}</p>

@@ -37,3 +37,9 @@ body {
   background-color: black;
   color: white;
 }
+
+@media only screen and (max-width: 1023px){
+  body{
+    background-color: #121212;
+  }
+}
