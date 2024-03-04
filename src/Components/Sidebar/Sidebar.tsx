@@ -9,17 +9,11 @@ import Link from "next/link"
 export default function Sidebar() {
     return (
         <section className="w-1/5 h-full flex flex-col gap-2">
-            <ul className="bg-[#121212] rounded-lg py-3 px-5 flex flex-col gap-6 w-100">
-                <Link href={"/"} className="flex flex-row items-center gap-2 text-md text-gray-500">
-                    <GoHome size={25} strokeWidth={0.75} />
-                    <span className="font-bold font-raleway text-lg">Home</span>
-                </Link>
-                {/* <li className="flex flex-row items-center gap-2 text-md">
-                    <BiSearch size={30} color="#ffffff" />
-                    <span>Search</span>
-                </li> */}
-            </ul>
-            <div className="bg-[#121212] rounded-lg py-3 px-5 flex flex-col gap-6 w-100 flex-grow">
+            <Link href={"/"} className="bg-[#121212] rounded-lg py-3 px-5 flex flex-row items-center gap-2 text-md text-gray-500">
+                <GoHome size={25} strokeWidth={0.75} />
+                <span className="font-bold font-raleway text-lg">Home</span>
+            </Link>
+            <div className="bg-[#121212] rounded-lg py-3 px-5 flex flex-col gap-6 flex-grow">
                 <div className="flex flex-row justify-between items-center text-gray-500">
                     <span className="flex flex-row items-center gap-2">
                         <LuLibrary size={25} strokeWidth={1.75} />

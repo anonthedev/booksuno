@@ -44,7 +44,7 @@ export default function SearchBooks() {
     }
 
     return (
-        <section className="w-100 flex flex-col gap-5 font-golos">
+        <section className="flex flex-col gap-5 font-golos">
             <h2 className="text-4xl font-bold">Search an audiobook</h2>
 
             <form onSubmit={(e) => { handleSubmit(e) }}
@@ -57,14 +57,15 @@ export default function SearchBooks() {
                     type="text"
                     onChange={(e) => { setSearchQuery(e.target.value) }}
                 />
+                <div className="flex flex-row gap-2 md:justify-center">
+                    <select className="text-black p-4 rounded-md md:w-fit font-semibold focus:outline-none" onChange={(e) => { setSearchFilter(e.target.value) }} defaultValue={"title"}>
+                        <option value="title">Title</option>
+                        <option value="author">Author</option>
+                        <option value="genre">Genre</option>
+                    </select>
 
-                <select className="text-black p-4 rounded-md md:w-fit font-semibold focus:outline-none" onChange={(e) => { setSearchFilter(e.target.value) }} defaultValue={"title"}>
-                    <option value="title">Title</option>
-                    <option value="author">Author</option>
-                    <option value="genre">Genre</option>
-                </select>
-
-                <button type="submit" disabled={searching} className={`bg-white text-black font-semibold p-4 rounded-md md:w-1/3 ${searching ? "opacity-50" : "opacity-100"}`}>{searching ? "Searching..." : "Search"}</button>
+                    <button type="submit" disabled={searching} className={`bg-white text-black font-semibold p-4 rounded-md md:w-1/3 ${searching ? "opacity-50" : "opacity-100"}`}>{searching ? "Searching..." : "Search"}</button>
+                </div>
             </form>
 
             <div className={`${searchResults ? "flex" : "hidden"} flex-row gap-2 items-center w-fit cursor-pointer text-gray-500 font-normal text-sm ease-in duration-300`} onClick={() => { setCollaspeResults(!collaspeResults) }}>

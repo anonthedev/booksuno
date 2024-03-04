@@ -60,7 +60,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
             <div className="flex flex-col w-full min-h-[56px] md:justify-between px-4 rounded-md 
             lg:bg-gray-800 
             lg:bg-clip-padding lg:backdrop-filter lg:backdrop-blur-md lg:bg-opacity-20">
-                <div className="flex flex-row items-center justify-between w-100 min-h-[54px]">
+                <div className="flex flex-row items-center justify-between min-h-[54px]">
                     <div className='w-[25ch] md:w-[30ch]'>
                         <p>{audioInfo.audioName}</p>
                     </div>
@@ -111,7 +111,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                     onMouseDown={() => setIsSeeking(true)}
                     onMouseUp={(e) => { setIsSeeking(false); handleSeek(e); }}
                     onChange={handleSeek}
-                    className="hidden lg:block h-[1px] accent-purple-600 w-100 rounded-md"
+                    className="hidden lg:block h-[1px] accent-purple-600 rounded-md"
                 />
             </div>
             {showToast && <Toast toast='Please select an audiobook first' type='error' />}
