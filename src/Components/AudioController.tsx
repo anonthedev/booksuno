@@ -85,7 +85,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
         }
     }
 
-    console.log(audioInfo.audioIndex + 1)
+    console.log(isPlaying, globalAudioURL)
 
     return (
         <section className='flex flex-col lg:mb-2'>
