@@ -28,7 +28,7 @@ export default function Book({ id }: { id: string }) {
 
     if (loading) {
         return (
-            <section className="w-3/4 bg-[#121212] p-4 rounded-lg flex flex-row gap-2 items-center justify-center h-full mb-2 lg:h-fit font-golos">
+            <section className="w-3/4 bg-[#121212] p-4 rounded-lg flex flex-row gap-2 items-center justify-center h-full mb-2 lg:h-fit lg:w-full font-golos">
                 <Loader />
                 <p>Loading...</p>
             </section>
