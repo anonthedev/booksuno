@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, MouseEventHandler } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa"
-import { useAudioURL } from '@/zustand/state';
+import { IoPlaySkipForward, IoPlaySkipBack } from "react-icons/io5";
+import { useAudioURL, useCurrentBookInfo } from '@/zustand/state';
 import Toast from './Toast';
 import Loader from './Loader';
 import Link from 'next/link';
@@ -22,7 +23,8 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
     const [volume, setVolume] = useState(100);
     const [isSeeking, setIsSeeking] = useState(false);
     const [showToast, setShowToast] = useState(false);
-    const { audioInfo, globalAudioURL } = useAudioURL((state: any) => state)
+    const { audioInfo, globalAudioURL, updateGlobalAudioURL, updateAudioInfo, updateIsPlaying } = useAudioURL((state: any) => state)
+    const { currentBookInfo } = useCurrentBookInfo((state: any) => state)
 
     useEffect(() => {
         setVolume(100);
@@ -56,6 +58,35 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+    const handleNextAudio = () => {
+        if (audioInfo.audioIndex < currentBookInfo.episodes.length - 1) {
+            const nextAudio = currentBookInfo.episodes[audioInfo.audioIndex + 1]
+            // console.log(nextAudio)
+            updateGlobalAudioURL(nextAudio.epURL)
+            updateAudioInfo({
+                audioName: nextAudio.epTitle,
+                audioAuthor: "",
+                bookId: audioInfo.bookId,
+                audioIndex: audioInfo.audioIndex + 1,
+            })
+        }
+    }
+
+    const handlePrevAudio = () => {
+        if (audioInfo.audioIndex > 0) {
+            const prevAudio = currentBookInfo.episodes[audioInfo.audioIndex - 1]
+            updateGlobalAudioURL(prevAudio.epURL)
+            updateAudioInfo({
+                audioName: prevAudio.epTitle,
+                audioAuthor: "",
+                bookId: audioInfo.bookId,
+                audioIndex: audioInfo.audioIndex - 1,
+            })
+        }
+    }
+
+    console.log(audioInfo.audioIndex + 1)
+
     return (
         <section className='flex flex-col lg:mb-2'>
             <div className="flex flex-col w-full min-h-[56px] md:justify-between px-4 rounded-md 
@@ -66,20 +97,30 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                         <Link className='underline' href={audioInfo.bookId ? audioInfo.bookId : "#"}>{audioInfo.audioName}</Link>
                     </div>
                     <div className='flex flex-col items-center self-center'>
-                        {isPlaying && canPlay
-                            ? <FaPause onClick={onPause} className={`cursor-pointer`} />
-                            : !isPlaying ? <FaPlay
-                                onClick={globalAudioURL
-                                    ? onPlay
-                                    : () => {
-                                        setShowToast(true)
-                                    }}
-                                className={`cursor-pointer`}
-                                color={globalAudioURL ? '#ffffff' : 'gray'} />
-                                : isPlaying && !canPlay
-                                    ? <Loader />
-                                    : null
-                        }
+                        <div className='flex flex-row gap-3'>
+                            <IoPlaySkipBack
+                                className='cursor-pointer'
+                                onClick={handlePrevAudio}
+                                color={globalAudioURL && audioInfo.audioIndex > 0 ? '#ffffff' : 'gray'} />
+                            {isPlaying && canPlay
+                                ? <FaPause onClick={onPause} className={`cursor-pointer`} />
+                                : !isPlaying ? <FaPlay
+                                    onClick={globalAudioURL
+                                        ? onPlay
+                                        : () => {
+                                            setShowToast(true)
+                                        }}
+                                    className={`cursor-pointer`}
+                                    color={globalAudioURL ? '#ffffff' : 'gray'} />
+                                    : isPlaying && !canPlay
+                                        ? <Loader />
+                                        : null
+                            }
+                            <IoPlaySkipForward
+                                className='cursor-pointer'
+                                onClick={handleNextAudio}
+                                color={globalAudioURL && audioInfo.audioIndex < currentBookInfo.episodes.length - 1 ? '#ffffff' : 'gray'} />
+                        </div>
                         <div className='flex flex-row items-center gap-3'>
                             <span className='lg:hidden'>{formatTime(currentTime)}</span>
                             <input

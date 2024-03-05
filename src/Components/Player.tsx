@@ -65,16 +65,16 @@ export default function AudioPlayer() {
     //     }
     // })
 
-    const handleOnEnded = () => {
+    const handleNextAudio = () => {
         if (audioInfo.audioIndex < currentBookInfo.episodes.length - 1) {
             const nextAudio = currentBookInfo.episodes[audioInfo.audioIndex + 1]
-            console.log(nextAudio)
+            // console.log(nextAudio)
             updateGlobalAudioURL(nextAudio.epURL)
             updateAudioInfo({
                 audioName: nextAudio.epTitle,
                 audioAuthor: "",
                 bookId: audioInfo.bookId,
-                audioIndex: audioInfo.index + 1,
+                audioIndex: audioInfo.audioIndex + 1,
             })
         } else {
             updateIsPlaying(false)
@@ -104,7 +104,7 @@ export default function AudioPlayer() {
         <div className="w-screen min-h-[54px] px-2">
             <audio ref={audioRef} src={globalAudioURL} onCanPlay={
                 () => { setCanPlay(true) }
-            } onEnded={handleOnEnded} />
+            } onEnded={handleNextAudio} />
             <AudioController
                 canPlay={canPlay}
                 onPlay={togglePlay}
