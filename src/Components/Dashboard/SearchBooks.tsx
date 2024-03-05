@@ -45,26 +45,25 @@ export default function SearchBooks() {
 
     return (
         <section className="flex flex-col gap-5 font-golos">
-            <h2 className="text-4xl font-bold">Search an audiobook</h2>
+            <h2 className="text-4xl font-bold">Search audiobooks</h2>
 
             <form onSubmit={(e) => { handleSubmit(e) }}
                 className="w-full flex flex-row gap-2 md:flex-col">
                 <input
                     onFocus={() => { updateSearchInputFocused(true) }}
                     onBlur={() => { updateSearchInputFocused(false) }}
-                    className="text-black bg-white w-1/2 md:w-full p-4 rounded-md focus:outline-none"
+                    className="text-white border-[1px] border-gray-500 bg-transparent w-1/2 md:w-full px-4 py-2 rounded-md focus:outline-none"
                     placeholder={searchFilter === "title" ? "Enter book name" : searchFilter === "author" ? "Enter author's last name" : searchFilter === "genre" ? "Enter genre" : "Enter book name"}
                     type="text"
                     onChange={(e) => { setSearchQuery(e.target.value) }}
                 />
                 <div className="flex flex-row gap-2 md:justify-center">
-                    <select className="text-black p-4 rounded-md md:w-fit font-semibold focus:outline-none" onChange={(e) => { setSearchFilter(e.target.value) }} defaultValue={"title"}>
+                    <select className="text-black px-4 py-2 rounded-md font-medium focus:outline-none duration-300 hover:bg-gray-200" onChange={(e) => { setSearchFilter(e.target.value) }} defaultValue={"title"}>
                         <option value="title">Title</option>
                         <option value="author">Author</option>
                         <option value="genre">Genre</option>
                     </select>
-
-                    <button type="submit" disabled={searching} className={`bg-white text-black font-semibold p-4 rounded-md md:w-1/3 ${searching ? "opacity-50" : "opacity-100"}`}>{searching ? "Searching..." : "Search"}</button>
+                    <button type="submit" disabled={searching} className={`bg-white text-black font-medium px-4 py-2 rounded-md duration-300 hover:bg-gray-200 ${searching ? "opacity-50" : "opacity-100"}`}>{searching ? "Searching..." : "Search"}</button>
                 </div>
             </form>
 
@@ -79,7 +78,7 @@ export default function SearchBooks() {
                         className="flex flex-row gap-3 items-center">
                         {/* <FaPlay size={20} className="cursor-pointer" /> */}
                         <div className="flex flex-col">
-                            <p title={book.title} className="text-gray-200 font-medium">{book.title.length > 40 ? book.title.slice(0, -(book.title.length - 40)) + "..." : book.title}</p>
+                            <p title={book.title} className="text-gray-200 font-medium text-lg">{book.title.length > 40 ? book.title.slice(0, -(book.title.length - 40)) + "..." : book.title}</p>
                             {book.authors.length > 0 && book.authors.map((author: any) => (<p key={author.id} className="text-xs text-gray-500">{author.first_name + " " + author.last_name}</p>))}
                         </div>
                     </Link>

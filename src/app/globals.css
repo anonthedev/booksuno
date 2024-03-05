@@ -38,6 +38,17 @@ body {
   color: white;
 }
 
+select{
+  /* box-sizing: border-box; */
+  -webkit-appearance: none;
+  appearance: none;
+  -moz-appearance: none;
+  background-image: url('https://www.svgrepo.com/show/80156/down-arrow.svg');
+  background-repeat: no-repeat;
+  background-size: 8px 8px;
+  background-position: right 12px center;
+}
+
 @media only screen and (max-width: 1023px){
   body{
     background-color: #121212;

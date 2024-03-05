@@ -5,6 +5,7 @@ import { FaPlay, FaPause } from "react-icons/fa"
 import { useAudioURL } from '@/zustand/state';
 import Toast from './Toast';
 import Loader from './Loader';
+import Link from 'next/link';
 
 interface propType {
     onPlay: MouseEventHandler<SVGElement>;
@@ -62,7 +63,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
             lg:bg-clip-padding lg:backdrop-filter lg:backdrop-blur-md lg:bg-opacity-20">
                 <div className="flex flex-row items-center justify-between min-h-[54px]">
                     <div className='w-[25ch] md:w-[30ch]'>
-                        <p>{audioInfo.audioName}</p>
+                        <Link className='underline' href={audioInfo.bookId ? audioInfo.bookId : "#"}>{audioInfo.audioName}</Link>
                     </div>
                     <div className='flex flex-col items-center self-center'>
                         {isPlaying && canPlay

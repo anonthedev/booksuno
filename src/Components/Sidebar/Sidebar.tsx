@@ -17,7 +17,7 @@ export default function Sidebar() {
                 <div className="flex flex-row justify-between items-center text-gray-500">
                     <span className="flex flex-row items-center gap-2">
                         <LuLibrary size={25} strokeWidth={1.75} />
-                        <h2 className="font-bold font-raleway text-lg">Your Library</h2>
+                        <h2 className="font-bold font-raleway text-lg">Library</h2>
                     </span>
                     <span className="flex flex-row gap-2 items-center">
                         <div className="hover:bg-gray-700 cursor-pointer rounded-full">

@@ -1,12 +1,13 @@
 'use client'
 
-import { useAudioURL, useSearchInputFocus } from "@/zustand/state"
+import { useAudioURL, useCurrentBookInfo, useSearchInputFocus } from "@/zustand/state"
 import React, { useState, useRef, useEffect } from 'react';
 import AudioController from './AudioController';
 
 export default function AudioPlayer() {
 
-    const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration } = useAudioURL((state: any) => state)
+    const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration, updateGlobalAudioURL, updateAudioInfo, audioInfo } = useAudioURL((state: any) => state)
+    const { currentBookInfo } = useCurrentBookInfo((state: any) => state)
     const { searchInputFocused } = useSearchInputFocus((state: any) => state)
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -64,6 +65,22 @@ export default function AudioPlayer() {
     //     }
     // })
 
+    const handleOnEnded = () => {
+        if (audioInfo.audioIndex < currentBookInfo.episodes.length - 1) {
+            const nextAudio = currentBookInfo.episodes[audioInfo.audioIndex + 1]
+            console.log(nextAudio)
+            updateGlobalAudioURL(nextAudio.epURL)
+            updateAudioInfo({
+                audioName: nextAudio.epTitle,
+                audioAuthor: "",
+                bookId: audioInfo.bookId,
+                audioIndex: audioInfo.index + 1,
+            })
+        } else {
+            updateIsPlaying(false)
+        }
+    }
+
     const togglePlay = () => {
         updateIsPlaying(true);
         audioRef.current?.play();
@@ -87,7 +104,7 @@ export default function AudioPlayer() {
         <div className="w-screen min-h-[54px] px-2">
             <audio ref={audioRef} src={globalAudioURL} onCanPlay={
                 () => { setCanPlay(true) }
-            } />
+            } onEnded={handleOnEnded} />
             <AudioController
                 canPlay={canPlay}
                 onPlay={togglePlay}
