@@ -43,7 +43,7 @@ export default function Book({ id }: { id: string }) {
                 </div>
                 <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-28">
                     {bookInfo &&
-                        <div className="flex flex-col gap-5 w-[48rem]">
+                        <div className="flex flex-col gap-5 max-w-3xl">
                             <h2 className="font-bold text-6xl leading-tight font-gloock tracking-wider md:text-4xl pl-1">{bookInfo.bookTitle}</h2>
                             <p className="font-golos">{bookInfo.bookDesc}</p>
                             <div className="flex flex-col gap-5 font-golos">
