@@ -57,7 +57,7 @@ export default function CurrentPlayingBook() {
                     <div className="flex flex-col gap-5 font-golos">
                         {currentBookInfo.episodes.length > 0 && currentBookInfo.episodes.map((episode: any, index: number) => (
                             <div className="flex flex-row items-center justify-between md:gap-1" key={index}>
-                                <div className="flex flex-row gap-2 items-center text-lg">
+                                <div className="flex flex-row gap-2 items-center">
                                     {isPlaying && globalAudioURL === episode.epURL ?
                                         <FaPause
                                             className="cursor-pointer"
@@ -78,7 +78,7 @@ export default function CurrentPlayingBook() {
                                                 })
                                                 updateIsPlaying(true)
                                             }} />}
-                                    <span>{index + 1}.</span>
+                                    <span className="text-sm">{index + 1}.</span>
                                     <span className="text-sm" title={episode.epTitle}>{trimString(episode.epTitle, 20)}</span>
                                 </div>
                                 <span className="text-gray-500 text-xs">{episode.epDuration}</span>

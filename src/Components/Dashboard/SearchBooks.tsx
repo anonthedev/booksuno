@@ -67,13 +67,14 @@ export default function SearchBooks() {
                 </div>
             </form>
 
-            <div className={`${searchResults ? "flex" : "hidden"} flex-row gap-2 items-center w-fit cursor-pointer text-gray-500 font-normal text-sm ease-in duration-300`} onClick={() => { setCollaspeResults(!collaspeResults) }}>
-                <FaChevronDown className={`${collaspeResults ? "-rotate-90" : "rotate-0"}`} />
+            <div className={`${searchResults ? "flex" : "hidden"} flex-row gap-1 items-center w-full cursor-pointer text-gray-500 font-normal text-sm`} onClick={() => { setCollaspeResults(!collaspeResults) }}>
+                <FaChevronDown size={12} className={`${collaspeResults ? "-rotate-90" : "rotate-0"} duration-300`} />
                 <span>{collaspeResults ? "Expand search results" : "Collapse search Results"}</span>
+                {/* <div className="h-[1px] bg-gray-500 flex-grow mx-2"></div> */}
             </div>
 
             {searchResults && searchResults.length > 0 && searchResults.map((book: any) => (
-                <div key={book.id} className={`${collaspeResults ? "hidden" : "flex"} flex-row items-center justify-between px-3 ease-in duration-300`}>
+                <div key={book.id} className={`${collaspeResults ? "hidden" : "flex"} flex-row items-center justify-between pl-4 -mt-2`}>
                     <Link href={book.id}
                         className="flex flex-row gap-3 items-center xl:w-full">
                         {/* <FaPlay size={20} className="cursor-pointer" /> */}
