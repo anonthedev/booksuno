@@ -3,12 +3,14 @@
 import { useAudioURL, useCurrentBookInfo, useSearchInputFocus } from "@/zustand/state"
 import React, { useState, useRef, useEffect } from 'react';
 import AudioController from './AudioController';
+import MediaSessionWrapper from "@mebtte/react-media-session";
 
 export default function AudioPlayer() {
-
     const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration, updateGlobalAudioURL, updateAudioInfo, audioInfo } = useAudioURL((state: any) => state)
     const { currentBookInfo } = useCurrentBookInfo((state: any) => state)
     const { searchInputFocused } = useSearchInputFocus((state: any) => state)
+
+    const windowAvailable = typeof window !== "undefined"
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [currentTime, setCurrentTime] = useState(0);
@@ -81,6 +83,19 @@ export default function AudioPlayer() {
         }
     }
 
+    const handlePrevAudio = () => {
+        if (audioInfo.audioIndex > 0) {
+            const prevAudio = currentBookInfo.episodes[audioInfo.audioIndex - 1]
+            updateGlobalAudioURL(prevAudio.epURL)
+            updateAudioInfo({
+                audioName: prevAudio.epTitle,
+                audioAuthor: "",
+                bookId: audioInfo.bookId,
+                audioIndex: audioInfo.audioIndex - 1,
+            })
+        }
+    }
+
     const togglePlay = () => {
         updateIsPlaying(true);
         audioRef.current?.play();
@@ -100,21 +115,41 @@ export default function AudioPlayer() {
         setCurrentTime(time);
     };
 
-    return (
-        <div className="w-screen min-h-[54px] px-2">
-            <audio ref={audioRef} src={globalAudioURL} onCanPlay={
-                () => { setCanPlay(true) }
-            } onEnded={handleNextAudio} />
-            <AudioController
-                canPlay={canPlay}
+    if (windowAvailable) {
+        return (
+            <MediaSessionWrapper
+                title={audioInfo.audioTitle}
+                // artist={currentBookInfo.}
+                artwork={[
+                    {
+                        src: "",
+                        sizes: '512x512',
+                    },
+                ]}
+                album={currentBookInfo && currentBookInfo.bookTitle}
                 onPlay={togglePlay}
                 onPause={togglePause}
-                isPlaying={isPlaying}
-                onVolumeChange={handleVolumeChange}
-                onSeek={handleSeek}
-                currentTime={currentTime}
-                duration={duration}
-            />
-        </div>
-    );
+                // onSeekBackward={onSeekBackward}
+                // onSeekForward={onSeekForward}
+                onPreviousTrack={handlePrevAudio}
+                onNextTrack={handleNextAudio}
+            >
+                <div className="w-screen min-h-[54px] px-2">
+                    <audio ref={audioRef} src={globalAudioURL} onCanPlay={
+                        () => { setCanPlay(true) }
+                    } onEnded={handleNextAudio} />
+                    <AudioController
+                        canPlay={canPlay}
+                        onPlay={togglePlay}
+                        onPause={togglePause}
+                        isPlaying={isPlaying}
+                        onVolumeChange={handleVolumeChange}
+                        onSeek={handleSeek}
+                        currentTime={currentTime}
+                        duration={duration}
+                    />
+                </div>
+            </MediaSessionWrapper>
+        );
+    }
 };

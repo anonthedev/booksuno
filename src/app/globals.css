@@ -33,6 +33,10 @@ audio::-webkit-media-controls-enclosure {
   background: #3a3a3a; 
 }
 
+input[type=range]{
+  accent-color: #eab308;
+}
+
 body {
   overflow-x: hidden;
   background-color: black;
