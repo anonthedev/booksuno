@@ -79,7 +79,7 @@ export default function RootLayout({
       <body>
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
           <GoogleAnalytics ga_id=
-            {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+            {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} ga_id2={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS2!} />
         ) : null}
         <section className="w-screen flex flex-row">
           <section className="w-3/4 xl:w-full">
