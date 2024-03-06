@@ -6,12 +6,15 @@ import { useEffect, useState } from "react"
 import { FaPlay, FaPause } from "react-icons/fa"
 import Loader from "../Loader"
 import { trimString } from "@/utils/utilFunctions"
+import { usePathname } from 'next/navigation'
 
 export default function CurrentPlayingBook() {
     const [reload, setReload] = useState<boolean>()
     const { audioInfo, updateGlobalAudioURL, globalAudioURL, updateAudioInfo, isPlaying, updateIsPlaying } = useAudioURL((state: any) => state)
-    const {currentBookInfo, updateCurrentBookInfo} = useCurrentBookInfo((state: any) => state)
+    const { currentBookInfo, updateCurrentBookInfo } = useCurrentBookInfo((state: any) => state)
     const [loading, setLoading] = useState<boolean>()
+
+    const pathname = usePathname()
 
     async function getCurrentBookInfo() {
         await axios.get(`/api/bookDetails?bookId=${audioInfo.bookId}`)
@@ -21,11 +24,11 @@ export default function CurrentPlayingBook() {
     }
 
     useEffect(() => {
-        if (audioInfo.bookId) {
+        if (audioInfo.bookId && currentBookInfo.bookId !== pathname.slice(1)) {
             setLoading(true)
             getCurrentBookInfo()
         }
-    }, [audioInfo.bookId])
+    }, [audioInfo.bookId, currentBookInfo])
 
     if (loading) {
         return (

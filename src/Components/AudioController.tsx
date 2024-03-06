@@ -87,8 +87,6 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
         }
     }
 
-    console.log(isPlaying, globalAudioURL)
-
     return (
         <section className='flex flex-col lg:mb-2'>
             <div className="flex flex-col w-full min-h-[56px] md:justify-between px-4 rounded-md 
@@ -133,7 +131,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                                 onMouseDown={() => setIsSeeking(true)}
                                 onMouseUp={(e) => { setIsSeeking(false); handleSeek(e); }}
                                 onChange={handleSeek}
-                                className="h-[3px] accent-yellow-500 w-72 outline-none border-none lg:hidden"
+                                className="h-[2px] accent-yellow-500 w-72 outline-none border-none lg:hidden"
                             />
                             <span className='lg:hidden'>{formatTime(duration)}</span>
                         </div>
