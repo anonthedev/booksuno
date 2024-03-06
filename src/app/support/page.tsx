@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import UPIQR from "@/resources/upi.png"
 
-export default function page() {
+export default function Page() {
     return (
         <section className="w-screen h-screen flex flex-col items-center justify-center gap-4 mx-8 lg:mx-0 md:-mt-12">
             <div className="">

@@ -8,7 +8,7 @@ export default function page({ params }: { params: { bookId: string } }) {
         <>
             <main className="lg:hidden flex flex-col w-screen h-screen">
                 <section className="bg-black flex flex-row w-full gap-2 p-2 pb-16 h-[100svh] overflow-y-hidden">
-                    <Sidebar />
+                    {/* <Sidebar /> */}
                     <section className="flex-grow">
                         <Book id={params.bookId} />
                     </section>

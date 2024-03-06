@@ -29,29 +29,29 @@ export default function CurrentPlayingBook() {
 
     if (loading) {
         return (
-            <section className=" bg-[#121212] flex flex-row gap-2 items-center justify-center w-full h-full font-golos text-center overflow-hidden">
+            <section className=" bg-[#121212] flex flex-row gap-2 items-center justify-center w-full h-full font-golos text-center overflow-hidden rounded-lg">
                 <Loader />
                 <p>Loading...</p>
             </section>
         )
     } else if (!audioInfo.bookId) {
         return (
-            <section className=" bg-[#121212] w-full flex flex-row gap-2 items-center justify-center h-full font-golos text-center overflow-hidden">
+            <section className=" bg-[#121212] w-full flex flex-row gap-2 items-center justify-center h-full font-golos text-center overflow-hidden rounded-lg">
                 <p>Please play some audiobooks</p>
             </section>
         )
     } else if (reload) {
         return (
-            <section className=" bg-[#121212] flex flex-row gap-2 items-center justify-center h-full font-golos text-center overflow-hidden">
+            <section className=" bg-[#121212] flex flex-row gap-2 items-center justify-center h-full font-golos text-center overflow-hidden rounded-lg">
                 <button className="border-[1px] border-gray-500 px-5 py-2 rounded-md duration-300 hover:bg-[#27272a]" onClick={getCurrentBookInfo}>Reload</button>
             </section>
         )
     }
 
     return (
-        <section className="w-full h-full overflow-y-auto">
+        <section className="w-full h-full bg-[#121212] rounded-lg p-2">
             {currentBookInfo &&
-                <div className="flex flex-col gap-5 p-2">
+                <div className="flex flex-col gap-5 py-2 px-4  overflow-y-auto h-full">
                     <h2 className="font-bold text-2xl leading-tight font-gloock tracking-wider pl-1">{currentBookInfo.bookTitle}</h2>
                     <p className="font-golos text-sm">{trimString(currentBookInfo.bookDesc, 120)}</p>
                     <div className="flex flex-col gap-5 font-golos">

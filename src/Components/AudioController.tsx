@@ -1,12 +1,13 @@
 "use client"
 
 import React, { useState, useEffect, MouseEventHandler } from 'react';
-import { FaPlay, FaPause } from "react-icons/fa"
+import { FaPlay, FaPause, FaVolumeUp } from "react-icons/fa"
 import { IoPlaySkipForward, IoPlaySkipBack } from "react-icons/io5";
-import { useAudioURL, useCurrentBookInfo } from '@/zustand/state';
+import { useAudioURL, useCurrentBookInfo, useBookInfo } from '@/zustand/state';
 import Toast from './Toast';
 import Loader from './Loader';
 import Link from 'next/link';
+import { trimString } from '@/utils/utilFunctions';
 
 interface propType {
     onPlay: MouseEventHandler<SVGElement>;
@@ -25,6 +26,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
     const [showToast, setShowToast] = useState(false);
     const { audioInfo, globalAudioURL, updateGlobalAudioURL, updateAudioInfo, updateIsPlaying } = useAudioURL((state: any) => state)
     const { currentBookInfo } = useCurrentBookInfo((state: any) => state)
+    const { bookInfo } = useBookInfo((state: any) => state)
 
     useEffect(() => {
         setVolume(100);
@@ -93,11 +95,11 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
             lg:bg-gray-800 
             lg:bg-clip-padding lg:backdrop-filter lg:backdrop-blur-md lg:bg-opacity-20">
                 <div className="flex flex-row items-center justify-between min-h-[54px]">
-                    <div className='w-[25ch] md:w-[30ch]'>
-                        <Link className='underline' href={audioInfo.bookId ? audioInfo.bookId : "#"}>{audioInfo.audioName}</Link>
+                    <div className='w-[30ch] lg:w-auto'>
+                        <Link className='text-sm leading-tight underline lg:no-underline' href={audioInfo.bookId ? audioInfo.bookId : "#"}>{currentBookInfo && trimString(currentBookInfo.bookTitle, 20) + " > " + audioInfo.audioName}</Link>
                     </div>
                     <div className='flex flex-col items-center self-center'>
-                        <div className='flex flex-row gap-3'>
+                        <div className='flex flex-row gap-3 self-center'>
                             <IoPlaySkipBack
                                 className='cursor-pointer'
                                 onClick={handlePrevAudio}
@@ -131,19 +133,22 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                                 onMouseDown={() => setIsSeeking(true)}
                                 onMouseUp={(e) => { setIsSeeking(false); handleSeek(e); }}
                                 onChange={handleSeek}
-                                className="h-[2px] accent-purple-600 w-72 lg:hidden"
+                                className="h-[3px] accent-yellow-500 w-72 outline-none border-none lg:hidden"
                             />
                             <span className='lg:hidden'>{formatTime(duration)}</span>
                         </div>
                     </div>
-                    <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={volume}
-                        onChange={handleVolumeChange}
-                        className="h-[2px] accent-purple-600 lg:hidden"
-                    />
+                    <div className='flex flex-row gap-3 items-center w-[30ch] justify-end lg:hidden'>
+                        <FaVolumeUp />
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={volume}
+                            onChange={handleVolumeChange}
+                            className="h-[2px] accent-yellow-500"
+                        />
+                    </div>
                 </div>
                 <input
                     type="range"
@@ -153,7 +158,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                     onMouseDown={() => setIsSeeking(true)}
                     onMouseUp={(e) => { setIsSeeking(false); handleSeek(e); }}
                     onChange={handleSeek}
-                    className="hidden lg:block h-[1px] accent-purple-600 rounded-md"
+                    className="hidden lg:block h-[2px] bg-gray-500 accent-yellow-500 rounded-md"
                 />
             </div>
             {showToast && <Toast toast='Please select an audiobook first' type='error' />}

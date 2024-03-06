@@ -4,6 +4,7 @@ import Player from "@/Components/Player";
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
 import GoogleAnalytics from "@/Components/GoogleAnalytics";
 import { Metadata } from "next/types";
+import CurrentPlayingBook from "@/Components/Book/CurrentPlayingBook";
 
 const APP_NAME = "booksuno";
 const APP_DEFAULT_TITLE = "booksuno";
@@ -80,7 +81,14 @@ export default function RootLayout({
           <GoogleAnalytics ga_id=
             {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         ) : null}
-        {children}
+        <section className="w-screen flex flex-row">
+          <section className="w-3/4 xl:w-full">
+            {children}
+          </section>
+          <section className="w-1/4 p-2 pb-16 h-screen xl:hidden">
+            <CurrentPlayingBook />
+          </section>
+        </section>
         <section className="fixed bottom-0 order-2">
           <Player />
           <MobileSidebar />

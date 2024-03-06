@@ -8,6 +8,7 @@ import { useAudioURL, useBookInfo, useCurrentBookInfo } from "@/zustand/state"
 import { FaPlay, FaPause } from "react-icons/fa"
 import DonateButton from "../DonateButton"
 import CurrentPlayingBook from "./CurrentPlayingBook"
+import Navbar from "../Navbar"
 
 export default function Book({ id }: { id: string }) {
     const [loading, setLoading] = useState<boolean>()
@@ -37,10 +38,8 @@ export default function Book({ id }: { id: string }) {
 
     return (
         <section className="flex flex-row gap-2 h-full w-full">
-            <section className="w-3/4 bg-[#121212] p-4 rounded-lg flex flex-col gap-8 h-full mb-2 xl:w-full lg:h-fit">
-                <div className="flex flex-row justify-between items-center">
-                    <DonateButton />
-                </div>
+            <section className="w-3/4 bg-[#121212] p-6 rounded-lg flex flex-col gap-8 h-full mb-2 xl:w-full lg:h-fit">
+                <Navbar/>
                 <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-28">
                     {bookInfo &&
                         <div className="flex flex-col gap-5 max-w-3xl">
@@ -83,9 +82,9 @@ export default function Book({ id }: { id: string }) {
                     }
                 </div>
             </section>
-            <section className="w-1/4 h-full p-2 rounded-lg bg-[#121212] xl:hidden">
+            {/* <section className="w-1/4 h-full p-2 rounded-lg bg-[#121212] xl:hidden">
                 <CurrentPlayingBook />
-            </section>
+            </section> */}
         </section>
     )
 }

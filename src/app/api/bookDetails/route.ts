@@ -12,6 +12,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
     const bookTitle = xmlDoc.getElementsByTagName("title")[0].textContent;
     const bookDesc = xmlDoc.getElementsByTagName("description")[0].textContent;
+    const bookId = id
 
     const episodes = xmlDoc.getElementsByTagName("item");
     const epInfo = Array.from(episodes).map((episode) => {
@@ -25,6 +26,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     return NextResponse.json({
         bookTitle,
         bookDesc,
+        bookId,
         episodes: epInfo
     });
   } catch (error) {

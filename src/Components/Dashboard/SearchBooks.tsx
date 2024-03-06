@@ -1,8 +1,9 @@
 import { useState, FormEvent } from "react"
 import axios from "axios"
-import { useSearch, useSearchInputFocus } from "@/zustand/state"
+import { useSearch, useSearchInputFocus, useCurrentBookInfo } from "@/zustand/state"
 import { FaChevronDown } from "react-icons/fa"
 import Link from "next/link"
+import { PiWaveformBold } from "react-icons/pi"
 
 export default function SearchBooks() {
     const [searching, setSearching] = useState<boolean>(false)
@@ -15,6 +16,7 @@ export default function SearchBooks() {
 
     const { updateSearchResults, searchResults } = useSearch((state: any) => state)
     const { updateSearchInputFocused } = useSearchInputFocus((state: any) => state)
+    const { currentBookInfo } = useCurrentBookInfo((state: any) => state)
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -58,7 +60,7 @@ export default function SearchBooks() {
                     onChange={(e) => { setSearchQuery(e.target.value) }}
                 />
                 <div className="flex flex-row gap-2 md:justify-center">
-                    <select className="text-black px-4 py-2 rounded-md font-medium focus:outline-none duration-300 hover:bg-gray-200" onChange={(e) => { setSearchFilter(e.target.value) }} defaultValue={"title"}>
+                    <select className="text-black px-4 py-2 rounded-md font-medium focus:outline-[1px] duration-300 hover:bg-gray-200" onChange={(e) => { setSearchFilter(e.target.value) }} defaultValue={"title"}>
                         <option value="title">Title</option>
                         <option value="author">Author</option>
                         <option value="genre">Genre</option>
@@ -78,6 +80,7 @@ export default function SearchBooks() {
                     <Link href={book.id}
                         className="flex flex-row gap-3 items-center xl:w-full">
                         {/* <FaPlay size={20} className="cursor-pointer" /> */}
+                        <PiWaveformBold className={`${currentBookInfo && currentBookInfo.bookId === book.id ? "visible" : "visible"}`} color={`${currentBookInfo && currentBookInfo.bookId === book.id ? "#eab308" : "#272727"}`} />
                         <div className="flex flex-col">
                             <p title={book.title} className="text-gray-200 font-medium text-lg">{book.title.length > 40 ? book.title.slice(0, -(book.title.length - 40)) + "..." : book.title}</p>
                             {book.authors.length > 0 && book.authors.map((author: any) => (<p key={author.id} className="text-xs text-gray-500">{author.first_name + " " + author.last_name}</p>))}
