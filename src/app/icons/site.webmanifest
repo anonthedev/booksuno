@@ -1,6 +1,6 @@
 {
-    "name": "librarify",
-    "short_name": "librarify",
+    "name": "booksuno - listen to audiobooks for free",
+    "short_name": "booksuno",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

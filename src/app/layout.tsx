@@ -5,10 +5,10 @@ import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
 import GoogleAnalytics from "@/Components/GoogleAnalytics";
 import { Metadata } from "next/types";
 
-const APP_NAME = "librarify";
-const APP_DEFAULT_TITLE = "librarify";
-const APP_TITLE_TEMPLATE = "%s - librarify";
-const APP_DESCRIPTION = "Discover a world of literary delights with Librarify! Dive into an extensive collection of free audiobooks, offering limitless listening pleasure. Immerse yourself in captivating stories, anytime, anywhere";
+const APP_NAME = "booksuno";
+const APP_DEFAULT_TITLE = "booksuno";
+const APP_TITLE_TEMPLATE = "%s - booksuno";
+const APP_DESCRIPTION = "Discover a world of literary delights with booksuno! Dive into an extensive collection of free audiobooks, offering limitless listening pleasure. Immerse yourself in captivating stories, anytime, anywhere";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
