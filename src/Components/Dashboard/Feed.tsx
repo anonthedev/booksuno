@@ -36,7 +36,7 @@ export default function Feed() {
                                 {book.authors.length > 0 && book.authors.map((author: any) => (<p key={author.id} className="text-xs text-gray-500">{author.first_name + " " + author.last_name}</p>))}
                             </div>
                         </Link>
-                        <Link href={book.id} className="pr-2 lg:pr-0 self-end">
+                        <Link href={book.id} className="pr-2 lg:pr-0">
                             <FaArrowRight color="#6b7280" />
                         </Link>
                     </div>

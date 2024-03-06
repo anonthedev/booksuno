@@ -1,14 +1,16 @@
-import { useState, FormEvent } from "react"
+import { useState, FormEvent, useEffect } from "react"
 import axios from "axios"
 import { useSearch, useSearchInputFocus, useCurrentBookInfo } from "@/zustand/state"
 import { FaChevronDown } from "react-icons/fa"
 import Link from "next/link"
 import { PiWaveformBold } from "react-icons/pi"
+import Toast from "../Toast"
 
 export default function SearchBooks() {
     const [searching, setSearching] = useState<boolean>(false)
     const [searchQuery, setSearchQuery] = useState("")
     const [collaspeResults, setCollaspeResults] = useState<boolean>(false)
+    const [showToast, setShowToast] = useState<boolean>(false)
 
     const specialCharsRegex = /[^\w\s]|_/g;
 
@@ -18,30 +20,51 @@ export default function SearchBooks() {
     const { updateSearchInputFocused } = useSearchInputFocus((state: any) => state)
     const { currentBookInfo } = useCurrentBookInfo((state: any) => state)
 
+    useEffect(() => {
+        if (showToast) {
+            const closeToast = setTimeout(() => {
+                setShowToast(false)
+            }, 3000)
+            return () => {
+                clearTimeout(closeToast)
+            }
+        }
+    }, [showToast])
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
         if (searchQuery !== "") {
             setSearching(true)
             await axios.get(`/api/search?filter=${searchFilter}&query=${searchQuery}`)
                 .then((results) => {
-                    if (searchQuery.split(" ").length > 1) {
-                        const filteredResults: any[] = [];
-                        results.data.books.forEach((book: any, index: number) => {
-                            const title = book.title.toLowerCase().replace(specialCharsRegex, "")
-                            if (title.includes(searchQuery.toLowerCase().replace(specialCharsRegex, ""))) {
-                                filteredResults.push(book);
-                            }
-                        })
-                        updateSearchResults(filteredResults)
+                    if (results.data.error !== undefined) {
+                        setSearching(false)
+                        updateSearchResults([])
+                        setShowToast(true)
                     } else {
-                        updateSearchResults(results.data.books)
+                        if (searchQuery.split(" ").length > 1) {
+                            const filteredResults: any[] = [];
+                            results.data.books.forEach((book: any, index: number) => {
+                                const title = book.title.toLowerCase().replace(specialCharsRegex, "")
+                                if (title.includes(searchQuery.toLowerCase().replace(specialCharsRegex, ""))) {
+                                    filteredResults.push(book);
+                                }
+                            })
+                            updateSearchResults(filteredResults)
+                        } else {
+                            updateSearchResults(results.data.books)
+                        }
                     }
                 })
                 .then(() => {
                     setSearching(false)
                     setCollaspeResults(false)
                 })
-                .catch(() => { setSearching(false) })
+                .catch(() => {
+                    setSearching(false)
+                    updateSearchResults([])
+                    setShowToast(true)
+                })
         }
     }
 
@@ -69,11 +92,11 @@ export default function SearchBooks() {
                 </div>
             </form>
 
-            <div className={`${searchResults ? "flex" : "hidden"} flex-row gap-1 items-center w-full cursor-pointer text-gray-500 font-normal text-sm`} onClick={() => { setCollaspeResults(!collaspeResults) }}>
+            {searchResults && searchResults.length > 0 && <div className={`${searchResults ? "flex" : "hidden"} flex-row gap-1 items-center w-full cursor-pointer text-gray-500 font-normal text-sm`} onClick={() => { setCollaspeResults(!collaspeResults) }}>
                 <FaChevronDown size={12} className={`${collaspeResults ? "-rotate-90" : "rotate-0"} duration-300`} />
                 <span>{collaspeResults ? "Expand search results" : "Collapse search Results"}</span>
                 {/* <div className="h-[1px] bg-gray-500 flex-grow mx-2"></div> */}
-            </div>
+            </div>}
 
             {searchResults && searchResults.length > 0 && searchResults.map((book: any) => (
                 <div key={book.id} className={`${collaspeResults ? "hidden" : "flex"} flex-row items-center justify-between pl-4 -mt-2`}>
@@ -88,6 +111,7 @@ export default function SearchBooks() {
                     </Link>
                 </div>))
             }
+            {showToast && <Toast toast="Sorry, we couldn't find what you're looking for" type="error" />}
         </section>
     )
 }
