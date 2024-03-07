@@ -23,7 +23,7 @@ export default function AudioPlayer() {
             updateDuration(audioRef.current?.duration)
             audioRef.current?.play()
         }
-    }, [globalAudioURL])
+    }, [globalAudioURL, updateDuration, updateIsPlaying])
 
     useEffect(() => {
         if (isPlaying === true) {
@@ -100,17 +100,20 @@ export default function AudioPlayer() {
             });
 
             navigator.mediaSession.setActionHandler('play', togglePlay);
-
             navigator.mediaSession.setActionHandler('pause', togglePause);
-
             navigator.mediaSession.setActionHandler("nexttrack", handleNextAudio);
             navigator.mediaSession.setActionHandler("previoustrack", handlePrevAudio);
-
             navigator.mediaSession.setActionHandler('seekto', (event) => {
                 const newPosition = event.seekTime;
                 audioRef.current!.currentTime = newPosition!;
                 setCurrentTime(newPosition!);
             });
+    
+            // Function to update the media session's position state
+            audioRef.current?.addEventListener('timeupdate', updatePositionState);
+
+            // Call the function initially to set the correct position state
+            updatePositionState();
         }
 
         return () => {
@@ -141,18 +144,27 @@ export default function AudioPlayer() {
     const handleSeek = (time: number) => {
         audioRef.current!.currentTime = time;
         setCurrentTime(time);
-        updateMediaSessionPosition(time);
     };
 
-    function updateMediaSessionPosition(position: number) {
-        if ('mediaSession' in navigator) {
+    // function updateMediaSessionPosition(position: number) {
+    //     if ('mediaSession' in navigator) {
+    //         navigator.mediaSession.setPositionState({
+    //             duration,
+    //             playbackRate: isPlaying ? 1 : 0,
+    //             position,
+    //         });
+    //     }
+    // };
+
+    function updatePositionState() {
+        if ('setPositionState' in navigator.mediaSession) {
             navigator.mediaSession.setPositionState({
-                duration,
-                playbackRate: isPlaying ? 1 : 0,
-                position,
+                duration: audioRef.current?.duration || 0,
+                playbackRate: audioRef.current?.playbackRate || 1,
+                position: audioRef.current?.currentTime || 0,
             });
         }
-    };
+    }
 
     return (
         <div className="w-screen min-h-[54px] px-2">
