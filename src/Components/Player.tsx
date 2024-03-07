@@ -123,7 +123,7 @@ export default function AudioPlayer() {
             navigator.mediaSession.setActionHandler("previoustrack", null);
             navigator.mediaSession.setActionHandler("seekto", null);
         }
-    }, [currentBookInfo, handleNextAudio, handlePrevAudio, togglePause, togglePlay, windowAvailable]);
+    }, [currentBookInfo, handleNextAudio, handlePrevAudio, togglePause, togglePlay, windowAvailable, isPlaying]);
 
     // useEffect(() => {
     //     console.log(searchInputFocused)
