@@ -104,11 +104,13 @@ export default function AudioPlayer() {
             navigator.mediaSession.setActionHandler("nexttrack", handleNextAudio);
             navigator.mediaSession.setActionHandler("previoustrack", handlePrevAudio);
             navigator.mediaSession.setActionHandler('seekto', (event) => {
-                const newPosition = event.seekTime;
-                audioRef.current!.currentTime = newPosition!;
-                setCurrentTime(newPosition!);
+                if (audioInfo.current?.currentTime !== event.seekTime) {
+                    const newPosition = event.seekTime;
+                    audioRef.current!.currentTime = newPosition ?? 0;
+                    setCurrentTime(newPosition!);
+                }
             });
-    
+
             // Function to update the media session's position state
             audioRef.current?.addEventListener('timeupdate', updatePositionState);
 
@@ -123,7 +125,7 @@ export default function AudioPlayer() {
             navigator.mediaSession.setActionHandler("previoustrack", null);
             navigator.mediaSession.setActionHandler("seekto", null);
         }
-    }, [currentBookInfo, handleNextAudio, handlePrevAudio, togglePause, togglePlay, windowAvailable, isPlaying]);
+    }, [currentBookInfo, handleNextAudio, handlePrevAudio, togglePause, togglePlay, windowAvailable, isPlaying, audioInfo]);
 
     // useEffect(() => {
     //     console.log(searchInputFocused)
