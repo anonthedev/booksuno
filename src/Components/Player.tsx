@@ -58,32 +58,28 @@ export default function AudioPlayer() {
         if (windowAvailable && 'mediaSession' in navigator && currentBookInfo) {
             navigator.mediaSession.metadata = new window.MediaMetadata({
                 title: currentBookInfo.bookTitle,
-                artist: "",
-                // artwork: [{ src: globalAudioURL, sizes: '96x96', type: 'image/png' }],
             });
 
             navigator.mediaSession.setActionHandler('play', togglePlay);
 
             navigator.mediaSession.setActionHandler('pause', togglePause);
 
-            navigator.mediaSession.setActionHandler('seekbackward', () => {
-                audioRef.current!.currentTime -= 10;
-                setCurrentTime(audioRef.current!.currentTime)
-                updateMediaSessionPosition(audioRef.current!.currentTime);
-            });
-
-            navigator.mediaSession.setActionHandler('seekforward', () => {
-                audioRef.current!.currentTime += 10;
-                setCurrentTime(audioRef.current!.currentTime)
-                updateMediaSessionPosition(audioRef.current!.currentTime);
-            });
+            navigator.mediaSession.setActionHandler("nexttrack", handleNextAudio);
+            navigator.mediaSession.setActionHandler("previoustrack", handlePrevAudio);
 
             navigator.mediaSession.setActionHandler('seekto', (event) => {
                 const newPosition = event.seekTime;
                 audioRef.current!.currentTime = newPosition!;
                 setCurrentTime(newPosition!);
-                updateMediaSessionPosition(newPosition!);
             });
+        }
+
+        return () => {
+            navigator.mediaSession.setActionHandler("play", null);
+            navigator.mediaSession.setActionHandler("pause", null);
+            navigator.mediaSession.setActionHandler("nexttrack", null);
+            navigator.mediaSession.setActionHandler("previoustrack", null);
+            navigator.mediaSession.setActionHandler("seekto", null);
         }
     }, [currentBookInfo, windowAvailable]);
 
