@@ -6,9 +6,9 @@ import Sidebar from "@/Components/Sidebar/Sidebar";
 export default function page({ params }: { params: { bookId: string } }) {
     return (
         <>
-            <main className="lg:hidden flex flex-col w-screen h-screen lg:h-[100svh]">
-                <section className="bg-black flex flex-row w-full gap-2 p-2 pb-16 h-[100svh] overflow-y-hidden lg:flex-col">
-                    <Sidebar />
+            <main className="lg:hidden flex flex-col w-screen h-screen">
+                <section className="bg-black flex flex-row w-full gap-2 p-2 pb-16 h-[100svh] overflow-y-hidden">
+                    {/* <Sidebar /> */}
                     <section className="flex-grow">
                         <Book id={params.bookId} />
                     </section>

@@ -1,13 +1,15 @@
 'use client'
 
-import { useAudioURL, useSearchInputFocus } from "@/zustand/state"
+import { useAudioURL, useCurrentBookInfo, useSearchInputFocus } from "@/zustand/state"
 import React, { useState, useRef, useEffect } from 'react';
 import AudioController from './AudioController';
 
 export default function AudioPlayer() {
-
-    const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration } = useAudioURL((state: any) => state)
+    const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration, updateGlobalAudioURL, updateAudioInfo, audioInfo } = useAudioURL((state: any) => state)
+    const { currentBookInfo } = useCurrentBookInfo((state: any) => state)
     const { searchInputFocused } = useSearchInputFocus((state: any) => state)
+
+    const windowAvailable = typeof window !== "undefined"
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [currentTime, setCurrentTime] = useState(0);
@@ -64,6 +66,35 @@ export default function AudioPlayer() {
     //     }
     // })
 
+    const handleNextAudio = () => {
+        if (audioInfo.audioIndex < currentBookInfo.episodes.length - 1) {
+            const nextAudio = currentBookInfo.episodes[audioInfo.audioIndex + 1]
+            // console.log(nextAudio)
+            updateGlobalAudioURL(nextAudio.epURL)
+            updateAudioInfo({
+                audioName: nextAudio.epTitle,
+                audioAuthor: "",
+                bookId: audioInfo.bookId,
+                audioIndex: audioInfo.audioIndex + 1,
+            })
+        } else {
+            updateIsPlaying(false)
+        }
+    }
+
+    const handlePrevAudio = () => {
+        if (audioInfo.audioIndex > 0) {
+            const prevAudio = currentBookInfo.episodes[audioInfo.audioIndex - 1]
+            updateGlobalAudioURL(prevAudio.epURL)
+            updateAudioInfo({
+                audioName: prevAudio.epTitle,
+                audioAuthor: "",
+                bookId: audioInfo.bookId,
+                audioIndex: audioInfo.audioIndex - 1,
+            })
+        }
+    }
+
     const togglePlay = () => {
         updateIsPlaying(true);
         audioRef.current?.play();
@@ -83,21 +114,23 @@ export default function AudioPlayer() {
         setCurrentTime(time);
     };
 
-    return (
-        <div className="w-screen min-h-[54px] px-2">
-            <audio ref={audioRef} src={globalAudioURL} onCanPlay={
-                () => { setCanPlay(true) }
-            } />
-            <AudioController
-                canPlay={canPlay}
-                onPlay={togglePlay}
-                onPause={togglePause}
-                isPlaying={isPlaying}
-                onVolumeChange={handleVolumeChange}
-                onSeek={handleSeek}
-                currentTime={currentTime}
-                duration={duration}
-            />
-        </div>
-    );
+    if (windowAvailable) {
+        return (
+                <div className="w-screen min-h-[54px] px-2">
+                    <audio ref={audioRef} src={globalAudioURL} onCanPlay={
+                        () => { setCanPlay(true) }
+                    } onEnded={handleNextAudio} />
+                    <AudioController
+                        canPlay={canPlay}
+                        onPlay={togglePlay}
+                        onPause={togglePause}
+                        isPlaying={isPlaying}
+                        onVolumeChange={handleVolumeChange}
+                        onSeek={handleSeek}
+                        currentTime={currentTime}
+                        duration={duration}
+                    />
+                </div>
+        );
+    }
 };

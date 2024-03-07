@@ -3,6 +3,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  swcMinify: true,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -16,12 +17,14 @@ const nextConfig = {
   },
 };
 
-const withSerwist = require("@serwist/next").default({
-  // Note: This is only an example. If you use Pages Router,
-  // use something else that works, such as "service-worker/index.ts".
-  swSrc: "src/app/sw.ts",
-  swDest: "src/public/sw.js",
-});
+import withPWAInit from '@ducanh2912/next-pwa'
+
+const withPWA = withPWAInit({
+  dest: 'public',
+  register: true,
+  reloadOnOnline: true,
+  
+})
 
 
-module.exports = withSerwist(nextConfig);
+export default withPWA(nextConfig);
