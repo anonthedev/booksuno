@@ -77,13 +77,10 @@ export default function AudioPlayer() {
             });
 
             navigator.mediaSession.setActionHandler('seekto', (event) => {
-                if (event.fastSeek && 'fastSeek' in audioRef.current!) {
-                    audioRef.current.fastSeek(event.seekTime!);
-                    setCurrentTime(event.seekTime!)
-                } else {
-                    audioRef.current!.currentTime = event.seekTime!;
-                    setCurrentTime(event.seekTime!)
-                }
+                const newPosition = event.seekTime;
+                audioRef.current!.currentTime = newPosition!;
+                setCurrentTime(newPosition!);
+                updateMediaSessionPosition(newPosition!);
             });
         }
     }, [currentBookInfo, windowAvailable]);
@@ -146,25 +143,35 @@ export default function AudioPlayer() {
     const handleSeek = (time: number) => {
         audioRef.current!.currentTime = time;
         setCurrentTime(time);
+        updateMediaSessionPosition(time);
     };
 
-    if (windowAvailable) {
-        return (
-                <div className="w-screen min-h-[54px] px-2">
-                    <audio ref={audioRef} src={globalAudioURL} onCanPlay={
-                        () => { setCanPlay(true) }
-                    } onEnded={handleNextAudio} />
-                    <AudioController
-                        canPlay={canPlay}
-                        onPlay={togglePlay}
-                        onPause={togglePause}
-                        isPlaying={isPlaying}
-                        onVolumeChange={handleVolumeChange}
-                        onSeek={handleSeek}
-                        currentTime={currentTime}
-                        duration={duration}
-                    />
-                </div>
-        );
-    }
+    function updateMediaSessionPosition(position: number) {
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.setPositionState({
+                duration,
+                playbackRate: isPlaying ? 1 : 0,
+                position,
+            });
+        }
+    };
+
+    return (
+        <div className="w-screen min-h-[54px] px-2">
+            <audio ref={audioRef} src={globalAudioURL} onCanPlay={
+                () => { setCanPlay(true) }
+            } onEnded={handleNextAudio} />
+            <AudioController
+                canPlay={canPlay}
+                onPlay={togglePlay}
+                onPause={togglePause}
+                isPlaying={isPlaying}
+                onVolumeChange={handleVolumeChange}
+                onSeek={handleSeek}
+                currentTime={currentTime}
+                duration={duration}
+            />
+        </div>
+    );
+
 };
