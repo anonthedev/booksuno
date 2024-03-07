@@ -1,7 +1,7 @@
 'use client'
 
 import { useAudioURL, useCurrentBookInfo, useSearchInputFocus } from "@/zustand/state"
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import AudioController from './AudioController';
 
 export default function AudioPlayer() {
@@ -54,6 +54,45 @@ export default function AudioPlayer() {
         };
     }, []);
 
+    const togglePlay = useCallback(() => {
+        updateIsPlaying(true);
+        audioRef.current?.play();
+    }, [updateIsPlaying]);
+
+
+    const handleNextAudio = useCallback(() => {
+        if (audioInfo.audioIndex < currentBookInfo.episodes.length - 1) {
+            const nextAudio = currentBookInfo.episodes[audioInfo.audioIndex + 1]
+            updateGlobalAudioURL(nextAudio.epURL)
+            updateAudioInfo({
+                audioName: nextAudio.epTitle,
+                audioAuthor: "",
+                bookId: audioInfo.bookId,
+                audioIndex: audioInfo.audioIndex + 1,
+            })
+        } else {
+            updateIsPlaying(false)
+        }
+    }, [audioInfo, currentBookInfo, updateAudioInfo, updateIsPlaying, updateGlobalAudioURL])
+
+    const handlePrevAudio = useCallback(() => {
+        if (audioInfo.audioIndex > 0) {
+            const prevAudio = currentBookInfo.episodes[audioInfo.audioIndex - 1]
+            updateGlobalAudioURL(prevAudio.epURL)
+            updateAudioInfo({
+                audioName: prevAudio.epTitle,
+                audioAuthor: "",
+                bookId: audioInfo.bookId,
+                audioIndex: audioInfo.audioIndex - 1,
+            })
+        }
+    }, [audioInfo, currentBookInfo, updateAudioInfo, updateGlobalAudioURL])
+
+    const togglePause = useCallback(() => {
+        updateIsPlaying(false)
+        audioRef.current?.pause()
+    }, [updateIsPlaying])
+
     useEffect(() => {
         if (windowAvailable && 'mediaSession' in navigator && currentBookInfo) {
             navigator.mediaSession.metadata = new window.MediaMetadata({
@@ -81,7 +120,7 @@ export default function AudioPlayer() {
             navigator.mediaSession.setActionHandler("previoustrack", null);
             navigator.mediaSession.setActionHandler("seekto", null);
         }
-    }, [currentBookInfo, windowAvailable]);
+    }, [currentBookInfo, handleNextAudio, handlePrevAudio, togglePause, togglePlay, windowAvailable]);
 
     // useEffect(() => {
     //     console.log(searchInputFocused)
@@ -94,45 +133,6 @@ export default function AudioPlayer() {
     //         }
     //     }
     // })
-
-    const handleNextAudio = () => {
-        if (audioInfo.audioIndex < currentBookInfo.episodes.length - 1) {
-            const nextAudio = currentBookInfo.episodes[audioInfo.audioIndex + 1]
-            // console.log(nextAudio)
-            updateGlobalAudioURL(nextAudio.epURL)
-            updateAudioInfo({
-                audioName: nextAudio.epTitle,
-                audioAuthor: "",
-                bookId: audioInfo.bookId,
-                audioIndex: audioInfo.audioIndex + 1,
-            })
-        } else {
-            updateIsPlaying(false)
-        }
-    }
-
-    const handlePrevAudio = () => {
-        if (audioInfo.audioIndex > 0) {
-            const prevAudio = currentBookInfo.episodes[audioInfo.audioIndex - 1]
-            updateGlobalAudioURL(prevAudio.epURL)
-            updateAudioInfo({
-                audioName: prevAudio.epTitle,
-                audioAuthor: "",
-                bookId: audioInfo.bookId,
-                audioIndex: audioInfo.audioIndex - 1,
-            })
-        }
-    }
-
-    const togglePlay = () => {
-        updateIsPlaying(true);
-        audioRef.current?.play();
-    };
-
-    const togglePause = () => {
-        updateIsPlaying(false)
-        audioRef.current?.pause()
-    }
 
     const handleVolumeChange = (volume: number) => {
         audioRef.current!.volume = volume;
