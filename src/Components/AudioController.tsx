@@ -43,13 +43,13 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
         }
     }, [showToast])
 
-    const handleVolumeChange = (e: any) => {
+    function handleVolumeChange(e: any) {
         const newVolume = e.target.value;
         setVolume(newVolume);
         onVolumeChange(newVolume / 100);
     };
 
-    const handleSeek = (e: any) => {
+    function handleSeek(e: any) {
         const newTime = e.target.value;
         onSeek(newTime);
     };

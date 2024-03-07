@@ -54,6 +54,40 @@ export default function AudioPlayer() {
         };
     }, []);
 
+    useEffect(() => {
+        if (windowAvailable && 'mediaSession' in navigator && currentBookInfo) {
+            navigator.mediaSession.metadata = new window.MediaMetadata({
+                title: currentBookInfo.bookTitle,
+                artist: "",
+                // artwork: [{ src: globalAudioURL, sizes: '96x96', type: 'image/png' }],
+            });
+
+            navigator.mediaSession.setActionHandler('play', togglePlay);
+
+            navigator.mediaSession.setActionHandler('pause', togglePause);
+
+            navigator.mediaSession.setActionHandler('seekbackward', () => {
+                audioRef.current!.currentTime -= 10;
+                setCurrentTime(audioRef.current!.currentTime)
+            });
+
+            navigator.mediaSession.setActionHandler('seekforward', () => {
+                audioRef.current!.currentTime += 10;
+                setCurrentTime(audioRef.current!.currentTime)
+            });
+
+            navigator.mediaSession.setActionHandler('seekto', (event) => {
+                if (event.fastSeek && 'fastSeek' in audioRef.current!) {
+                    audioRef.current.fastSeek(event.seekTime!);
+                    setCurrentTime(event.seekTime!)
+                } else {
+                    audioRef.current!.currentTime = event.seekTime!;
+                    setCurrentTime(event.seekTime!)
+                }
+            });
+        }
+    }, [currentBookInfo, windowAvailable]);
+
     // useEffect(() => {
     //     console.log(searchInputFocused)
     //     if (globalAudioURL && !searchInputFocused) {
@@ -95,12 +129,12 @@ export default function AudioPlayer() {
         }
     }
 
-    const togglePlay = () => {
+    function togglePlay() {
         updateIsPlaying(true);
         audioRef.current?.play();
     };
 
-    const togglePause = () => {
+    function togglePause() {
         updateIsPlaying(false)
         audioRef.current?.pause()
     }
@@ -116,21 +150,21 @@ export default function AudioPlayer() {
 
     if (windowAvailable) {
         return (
-                <div className="w-screen min-h-[54px] px-2">
-                    <audio ref={audioRef} src={globalAudioURL} onCanPlay={
-                        () => { setCanPlay(true) }
-                    } onEnded={handleNextAudio} />
-                    <AudioController
-                        canPlay={canPlay}
-                        onPlay={togglePlay}
-                        onPause={togglePause}
-                        isPlaying={isPlaying}
-                        onVolumeChange={handleVolumeChange}
-                        onSeek={handleSeek}
-                        currentTime={currentTime}
-                        duration={duration}
-                    />
-                </div>
+            <div className="w-screen min-h-[54px] px-2">
+                <audio ref={audioRef} src={globalAudioURL} onCanPlay={
+                    () => { setCanPlay(true) }
+                } onEnded={handleNextAudio} />
+                <AudioController
+                    canPlay={canPlay}
+                    onPlay={togglePlay}
+                    onPause={togglePause}
+                    isPlaying={isPlaying}
+                    onVolumeChange={handleVolumeChange}
+                    onSeek={handleSeek}
+                    currentTime={currentTime}
+                    duration={duration}
+                />
+            </div>
         );
     }
 };
