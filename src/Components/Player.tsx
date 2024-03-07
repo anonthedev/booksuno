@@ -3,7 +3,6 @@
 import { useAudioURL, useCurrentBookInfo, useSearchInputFocus } from "@/zustand/state"
 import React, { useState, useRef, useEffect } from 'react';
 import AudioController from './AudioController';
-import MediaSessionWrapper from "@mebtte/react-media-session";
 
 export default function AudioPlayer() {
     const { globalAudioURL, isPlaying, updateIsPlaying, updateDuration, updateGlobalAudioURL, updateAudioInfo, audioInfo } = useAudioURL((state: any) => state)
@@ -117,23 +116,6 @@ export default function AudioPlayer() {
 
     if (windowAvailable) {
         return (
-            <MediaSessionWrapper
-                title={audioInfo.audioTitle}
-                // artist={currentBookInfo.}
-                artwork={[
-                    {
-                        src: "",
-                        sizes: '512x512',
-                    },
-                ]}
-                album={currentBookInfo && currentBookInfo.bookTitle}
-                onPlay={togglePlay}
-                onPause={togglePause}
-                // onSeekBackward={onSeekBackward}
-                // onSeekForward={onSeekForward}
-                onPreviousTrack={handlePrevAudio}
-                onNextTrack={handleNextAudio}
-            >
                 <div className="w-screen min-h-[54px] px-2">
                     <audio ref={audioRef} src={globalAudioURL} onCanPlay={
                         () => { setCanPlay(true) }
@@ -149,7 +131,6 @@ export default function AudioPlayer() {
                         duration={duration}
                     />
                 </div>
-            </MediaSessionWrapper>
         );
     }
 };
