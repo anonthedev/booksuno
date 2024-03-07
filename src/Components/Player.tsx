@@ -69,11 +69,13 @@ export default function AudioPlayer() {
             navigator.mediaSession.setActionHandler('seekbackward', () => {
                 audioRef.current!.currentTime -= 10;
                 setCurrentTime(audioRef.current!.currentTime)
+                updateMediaSessionPosition(audioRef.current!.currentTime);
             });
 
             navigator.mediaSession.setActionHandler('seekforward', () => {
                 audioRef.current!.currentTime += 10;
                 setCurrentTime(audioRef.current!.currentTime)
+                updateMediaSessionPosition(audioRef.current!.currentTime);
             });
 
             navigator.mediaSession.setActionHandler('seekto', (event) => {
