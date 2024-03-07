@@ -54,6 +54,40 @@ export default function AudioPlayer() {
         };
     }, []);
 
+    useEffect(() => {
+        if (windowAvailable && 'mediaSession' in navigator && currentBookInfo) {
+            navigator.mediaSession.metadata = new window.MediaMetadata({
+                title: currentBookInfo.bookTitle,
+                artist: "",
+                // artwork: [{ src: globalAudioURL, sizes: '96x96', type: 'image/png' }],
+            });
+
+            navigator.mediaSession.setActionHandler('play', togglePlay);
+
+            navigator.mediaSession.setActionHandler('pause', togglePause);
+
+            navigator.mediaSession.setActionHandler('seekbackward', () => {
+                audioRef.current!.currentTime -= 10;
+                setCurrentTime(audioRef.current!.currentTime)
+            });
+
+            navigator.mediaSession.setActionHandler('seekforward', () => {
+                audioRef.current!.currentTime += 10;
+                setCurrentTime(audioRef.current!.currentTime)
+            });
+
+            navigator.mediaSession.setActionHandler('seekto', (event) => {
+                if (event.fastSeek && 'fastSeek' in audioRef.current!) {
+                    audioRef.current.fastSeek(event.seekTime!);
+                    setCurrentTime(event.seekTime!)
+                } else {
+                    audioRef.current!.currentTime = event.seekTime!;
+                    setCurrentTime(event.seekTime!)
+                }
+            });
+        }
+    }, [currentBookInfo, windowAvailable]);
+
     // useEffect(() => {
     //     console.log(searchInputFocused)
     //     if (globalAudioURL && !searchInputFocused) {
