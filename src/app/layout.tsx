@@ -72,9 +72,9 @@ export const metadata: Metadata = {
     description: APP_DESCRIPTION,
     images:[
       {
-        url: 'https://booksuno.xyz/twitter-image.png',
-        width: 1920,
-        height: 1080,
+        url: 'https://booksuno.xyz/og.png',
+        width: 800,
+        height: 600,
       },
     ],
     site: APP_URL,
