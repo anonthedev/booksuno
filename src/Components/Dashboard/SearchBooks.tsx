@@ -50,7 +50,12 @@ export default function SearchBooks() {
                                     filteredResults.push(book);
                                 }
                             })
-                            updateSearchResults(filteredResults)
+                            if (filteredResults.length > 0) {
+                                updateSearchResults(filteredResults)
+                            } else {
+                                updateSearchResults([])
+                                setShowToast(true)
+                            }
                         } else {
                             updateSearchResults(results.data.books)
                         }

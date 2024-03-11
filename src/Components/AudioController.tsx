@@ -55,6 +55,9 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
     };
 
     const formatTime = (time: number) => {
+        if (time === 0) {
+            return "--:--"
+        }
         const minutes = Math.floor(time / 60);
         const seconds = Math.floor(time % 60);
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
@@ -94,7 +97,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
             lg:bg-clip-padding lg:backdrop-filter lg:backdrop-blur-md lg:bg-opacity-20">
                 <div className="flex flex-row items-center justify-between min-h-[54px]">
                     <div className='w-[30ch] lg:w-auto'>
-                        <Link className='text-sm leading-tight underline lg:no-underline' href={audioInfo.bookId ? audioInfo.bookId : "#"}>{currentBookInfo && trimString(currentBookInfo.bookTitle, 20) + " > " + audioInfo.audioName}</Link>
+                        <Link className='text-sm leading-tight font-raleway font-semibold' href={audioInfo.bookId ? audioInfo.bookId : "#"}>{currentBookInfo && trimString(currentBookInfo.bookTitle, 20) + "   >   " + audioInfo.audioName}</Link>
                     </div>
                     <div className='flex flex-col items-center self-center'>
                         <div className='flex flex-row gap-3 self-center'>
@@ -122,7 +125,7 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                                 color={globalAudioURL && audioInfo.audioIndex < currentBookInfo.episodes.length - 1 ? '#ffffff' : 'gray'} />
                         </div>
                         <div className='flex flex-row items-center gap-3'>
-                            <span className='lg:hidden'>{formatTime(currentTime)}</span>
+                            <span className={`${currentTime === 0 ? "text-gray-400" : "text-white"} lg:hidden`}>{formatTime(currentTime)}</span>
                             <input
                                 type="range"
                                 min="0"
@@ -131,9 +134,9 @@ export default function AudioController({ onPlay, onPause, isPlaying, onVolumeCh
                                 onMouseDown={() => setIsSeeking(true)}
                                 onMouseUp={(e) => { setIsSeeking(false); handleSeek(e); }}
                                 onChange={handleSeek}
-                                className="h-[2px] accent-yellow-500 w-72 outline-none border-none lg:hidden"
+                                className={`h-[2px] ${!globalAudioURL ? "accent-gray-400" : "accent-yellow-500"} w-72 outline-none border-none lg:hidden`}
                             />
-                            <span className='lg:hidden'>{formatTime(duration)}</span>
+                            <span className={`${currentTime === 0 ? "text-gray-400" : "text-white"} lg:hidden`}>{formatTime(duration)}</span>
                         </div>
                     </div>
                     <div className='flex flex-row gap-3 items-center w-[30ch] justify-end lg:hidden'>

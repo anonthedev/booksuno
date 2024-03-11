@@ -2,8 +2,9 @@ import "./globals.css";
 import { Gloock, Golos_Text, Raleway } from "next/font/google";
 import Player from "@/Components/Player";
 import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
-import GoogleAnalytics from "@/Components/GoogleAnalytics";
+// import GoogleAnalytics from "@/Components/GoogleAnalytics";
 import { Metadata } from "next/types";
+import { GoogleAnalytics } from '@next/third-parties/google'
 import CurrentPlayingBook from "@/Components/Book/CurrentPlayingBook";
 
 const APP_NAME = "booksuno";
@@ -112,9 +113,13 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head> */}
       <body>
-        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
-          <GoogleAnalytics ga_id=
-            {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} ga_id2={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS2!} />
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS2 && process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
+          <>
+          <GoogleAnalytics gaId=
+            {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS2} />
+            <GoogleAnalytics gaId=
+            {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+            </>
         ) : null}
         <section className="w-screen flex flex-row">
           <section className="w-3/4 xl:w-full">
