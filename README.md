@@ -1,10 +1,10 @@
 <br/>
 <p align="center">
   <a href="https://github.com/anonthedev/booksuno">
-    <img src="public/og.png" alt="Logo" width="80" height="80">
+    <img src="public/android-chrome-512x512.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">free audiobooks</h3>
+  <h3 align="center">booksuno.</h3>
 
   <p align="center">
     A website to listen to audiobooks for free.
