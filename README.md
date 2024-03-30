@@ -92,7 +92,7 @@ Distributed under the MIT License. See [LICENSE](https://github.com/anonthedev/b
 
 ## Authors
 
-* **anon** - *developer* - [anon](https://github.com/anonthedev/) - *Built the whole thing till now.*
+* [**anon**](https://github.com/anonthedev/) - *developer* - *Built the whole thing till now.*
 
 ## Acknowledgements
 
