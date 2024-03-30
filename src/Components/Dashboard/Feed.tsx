@@ -29,7 +29,7 @@ export default function Feed() {
             <div className="flex flex-col gap-4">
                 {!loading ? feed && feed.books.length > 0 && feed.books.map((book: any) => (
                     <div className="flex flex-row gap-3 items-center justify-between" key={book.id}>
-                        <Link href={book.id} className="flex flex-row gap-3 items-center cursor-pointer w-fit md:w-full">
+                        <Link href={`/${book.id}`} className="flex flex-row gap-3 items-center cursor-pointer w-fit md:w-full">
                             <PiWaveformBold className={`${currentBookInfo && currentBookInfo.bookId === book.id ? "visible" : "visible"}`} color={`${currentBookInfo && currentBookInfo.bookId === book.id ? "#eab308" : "#272727"}`} />
                             <div>
                                 <p className={`text-gray-200 font-medium text-lg`}>{book.title.length > 40 ? book.title.slice(0, -(book.title.length - 40)) + "..." : book.title}</p>
