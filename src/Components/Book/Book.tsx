@@ -44,7 +44,7 @@ export default function Book({ id }: { id: string }) {
                     {bookInfo &&
                         <div className="flex flex-col gap-5 max-w-3xl">
                             <h2 className="font-bold text-6xl leading-tight font-gloock tracking-wider md:text-4xl pl-1">{bookInfo.bookTitle}</h2>
-                            <p className="font-golos">{bookInfo.bookDesc}</p>
+                            <p className="font-golos" dangerouslySetInnerHTML={{__html: bookInfo.bookDesc}}></p>
                             <div className="flex flex-col gap-5 font-golos">
                                 {bookInfo.episodes.length > 0 && bookInfo.episodes.map((episode: any, index: number) => (
                                     <div className="flex flex-row w-full items-center justify-between md:gap-1" key={index}>
