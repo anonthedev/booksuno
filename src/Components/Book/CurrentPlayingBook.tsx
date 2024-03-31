@@ -56,7 +56,7 @@ export default function CurrentPlayingBook() {
             {currentBookInfo &&
                 <div className="flex flex-col gap-5 py-2 px-4  overflow-y-auto h-full">
                     <h2 className="font-bold text-2xl leading-tight font-gloock tracking-wider pl-1">{currentBookInfo.bookTitle}</h2>
-                    <p className="font-golos text-sm">{trimString(currentBookInfo.bookDesc, 120)}</p>
+                    <p className="font-golos text-sm" dangerouslySetInnerHTML={{__html:trimString(currentBookInfo.bookDesc, 120)}}></p>
                     <div className="flex flex-col gap-5 font-golos">
                         {currentBookInfo.episodes.length > 0 && currentBookInfo.episodes.map((episode: any, index: number) => (
                             <div className="flex flex-row items-center justify-between md:gap-1" key={index}>
