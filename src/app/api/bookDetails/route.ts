@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { DOMParser } from "xmldom";
+import { sanitizeAndReturnString } from '@/utils/utilFunctions';
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const id = req.nextUrl.searchParams.get("bookId")!;
@@ -11,7 +12,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const xmlDoc = parser.parseFromString(resp.data, "text/xml");
 
     const bookTitle = xmlDoc.getElementsByTagName("title")[0].textContent;
-    const bookDesc = xmlDoc.getElementsByTagName("description")[0].textContent;
+    const bookDesc = sanitizeAndReturnString(xmlDoc.getElementsByTagName("description")[0].textContent);
     const bookId = id
 
     const episodes = xmlDoc.getElementsByTagName("item");
