@@ -6,8 +6,6 @@ import { useEffect, useState } from "react"
 import Loader from "../Loader"
 import { useAudioURL, useBookInfo, useCurrentBookInfo } from "@/zustand/state"
 import { FaPlay, FaPause } from "react-icons/fa"
-import DonateButton from "../DonateButton"
-import CurrentPlayingBook from "./CurrentPlayingBook"
 import Navbar from "../Navbar"
 
 export default function Book({ id }: { id: string }) {
@@ -38,7 +36,7 @@ export default function Book({ id }: { id: string }) {
 
     return (
         <section className="flex flex-row gap-2 h-full w-full">
-            <section className="w-3/4 bg-[#121212] p-6 rounded-lg flex flex-col gap-8 h-full mb-2 xl:w-full lg:h-fit">
+            <section className="w-3/4 bg-[#121212] p-6 rounded-lg flex flex-col gap-8 h-full mb-2 xl:w-full lg:h-fit lg:p-4">
                 <Navbar/>
                 <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-16">
                     {bookInfo &&
