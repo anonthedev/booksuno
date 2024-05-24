@@ -127,9 +127,8 @@ export default function RootLayout({
             <CurrentPlayingBook />
           </section>
         </section>
-        <section className="fixed bottom-3 order-2">
+        <section className="fixed bottom-0 lg:bottom-3 order-2">
           <Player />
-          {/* <MobileSidebar /> */}
         </section>
       </body>
     </html>
