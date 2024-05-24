@@ -1,14 +1,10 @@
 import Dashboard from "@/Components/Dashboard/Dashboard";
-import Player from "@/Components/Player";
-import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
-import Sidebar from "@/Components/Sidebar/Sidebar";
 
 export default function Page() {
   return (
     <>
       <main className="lg:hidden flex flex-col w-screen h-screen">
         <section className="bg-black flex flex-row w-full gap-2 p-2 pb-16 h-[100svh] overflow-y-hidden">
-          {/* <Sidebar /> */}
           <section className="flex-grow">
             <Dashboard />
           </section>

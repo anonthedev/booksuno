@@ -1,8 +1,6 @@
 import "./globals.css";
 import { Gloock, Golos_Text, Raleway } from "next/font/google";
 import Player from "@/Components/Player";
-import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
-// import GoogleAnalytics from "@/Components/GoogleAnalytics";
 import { Metadata } from "next/types";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import CurrentPlayingBook from "@/Components/Book/CurrentPlayingBook";
@@ -129,9 +127,9 @@ export default function RootLayout({
             <CurrentPlayingBook />
           </section>
         </section>
-        <section className="fixed bottom-0 order-2">
+        <section className="fixed bottom-3 order-2">
           <Player />
-          <MobileSidebar />
+          {/* <MobileSidebar /> */}
         </section>
       </body>
     </html>

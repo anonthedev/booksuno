@@ -40,7 +40,7 @@ export default function Book({ id }: { id: string }) {
         <section className="flex flex-row gap-2 h-full w-full">
             <section className="w-3/4 bg-[#121212] p-6 rounded-lg flex flex-col gap-8 h-full mb-2 xl:w-full lg:h-fit">
                 <Navbar/>
-                <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-28">
+                <div className="flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-16">
                     {bookInfo &&
                         <div className="flex flex-col gap-5 max-w-3xl">
                             <h2 className="font-bold text-6xl leading-tight font-gloock tracking-wider md:text-4xl pl-1">{bookInfo.bookTitle}</h2>

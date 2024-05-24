@@ -11,7 +11,7 @@ export default function Dashboard() {
         <section className="flex flex-row gap-2 h-full mb-2 lg:h-fit">
             <article className="w-3/4 bg-[#121212] p-6 rounded-lg flex flex-col gap-8 h-full mb-2 lg:h-fit xl:w-full lg:p-4">
                 <Navbar />
-                <div className="w-full flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-28">
+                <div className="w-full flex flex-col gap-8 overflow-y-auto lg:overflow-y-hidden lg:mb-16">
                     <SearchBooks />
                     <Feed />
                 </div>

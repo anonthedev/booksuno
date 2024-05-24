@@ -1,21 +1,16 @@
 import Book from "@/Components/Book/Book";
-import Player from "@/Components/Player";
-import MobileSidebar from "@/Components/Sidebar/MobileSidebar";
-import Sidebar from "@/Components/Sidebar/Sidebar";
 
 export default function page({ params }: { params: { bookId: string } }) {
     return (
         <>
             <main className="lg:hidden flex flex-col w-screen h-screen">
                 <section className="bg-black flex flex-row w-full gap-2 p-2 pb-16 h-[100svh] overflow-y-hidden">
-                    {/* <Sidebar /> */}
                     <section className="flex-grow">
                         <Book id={params.bookId} />
                     </section>
                 </section>
                 {/* <section className="lg:hidden fixed bottom-0">
                     <Player />
-                    <MobileSidebar />
                 </section> */}
             </main>
 
@@ -25,7 +20,6 @@ export default function page({ params }: { params: { bookId: string } }) {
                 </section>
                 {/* <section className="fixed bottom-0 order-2">
                     <Player />
-                    <MobileSidebar />
                 </section> */}
             </main>
         </>
